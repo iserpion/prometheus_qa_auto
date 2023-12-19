@@ -1,4 +1,0 @@
-test_changes
-new test line
-another line
-the last one line
