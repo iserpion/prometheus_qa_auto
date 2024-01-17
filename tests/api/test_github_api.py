@@ -1,5 +1,5 @@
 import pytest
-from modules.common.baseclasses.response import Response
+from modules.api.baseclasses.response import Response
 from modules.common.schemas.follower import Follower
 
 @pytest.mark.api
