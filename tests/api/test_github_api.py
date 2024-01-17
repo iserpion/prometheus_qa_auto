@@ -2,6 +2,7 @@ import pytest
 from modules.api.baseclasses.response import Response
 from modules.common.schemas.follower import Follower
 
+# Required part of project:
 @pytest.mark.api
 def test_user_exists(github_api):
     user = github_api.get_user('defunkt')
@@ -28,6 +29,7 @@ def test_repo_with_single_char_be_found(github_api):
     response = github_api.search_repo('s')
     assert response['total_count'] != 0
 
+# Individual part of project:
 @pytest.mark.api
 @pytest.mark.parametrize('branch_name',[
     'main',

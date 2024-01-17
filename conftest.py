@@ -1,5 +1,6 @@
 import pytest
 from modules.api.clients.github import GitHub
+from modules.common.database import Database
 
 class User:
     def __init__(self) -> None:
@@ -27,3 +28,9 @@ def user():
 def github_api():
     api = GitHub()
     yield api
+
+@pytest.fixture
+def db():
+    data_base = Database()
+    yield data_base
+    data_base.connection.close()
