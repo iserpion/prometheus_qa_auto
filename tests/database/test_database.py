@@ -133,3 +133,11 @@ def test_max_product_description(db):
     max_desc = db.select_product_with_max_description()
     # check that product description with maximum length is valid 
     assert max_desc[0][0] == 'натуральне незбиране'
+
+@pytest.mark.database
+def test_max_city_count_in_customers(db):
+    """Test checks which city most appears in customers table"""
+
+    max_city = db.select_customers_city_max_count()
+    # check the city is valid
+    assert max_city[0][0] == 'Odesa'

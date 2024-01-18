@@ -83,13 +83,13 @@ def test_create_issue_without_authorization(github_api):
 @pytest.mark.api
 def test_validate_followers(github_api):
     """This test validates GitHub API user followers 
-    response using Pydantic library and checks response status code"""
+    response body using Pydantic library and checks response status code"""
 
     Response(github_api.get_followers('defunkt')).validate(Follower).assert_status_code(200)
 
 @pytest.mark.skip('Test skipping')
 @pytest.mark.api
-def test_followers_site_admin_exists(github_api):
+def test_follower_site_admin_exists(github_api):
     """This test checks that in GitHub API user followers 
     response exists follower with key "site_admin":true """
 
@@ -102,3 +102,31 @@ def test_followers_site_admin_exists(github_api):
             break
     
     assert is_admin == True, 'There is no site admin users in followers list'
+
+@pytest.mark.api
+@pytest.mark.parametrize('key, value', [
+        pytest.param('Server', 'GitHub.com', 
+                    id='Server',
+                     ),
+        pytest.param('Content-Type', 'application/json; charset=utf-8',
+                    id='Content-Type',
+                    ),
+        pytest.param('Vary', 'Accept, Accept-Encoding, Accept, X-Requested-With',
+                    id='Vary',
+                    ),
+        pytest.param('Access-Control-Allow-Origin', '*',
+                    id='Access-Control-Allow-Origin',
+                    ),
+        pytest.param('Content-Encoding', 'gzip',
+                    id='Content-Encoding',
+                    )
+    ]
+) 
+def test_headers_in_followers_response(github_api, key, value):
+    """This test checks some headers in GitHub API followers response"""
+
+    response_headers = github_api.get_followers('defunkt').headers
+
+    assert response_headers[key] == value, f'{key} header is not existed in response'
+
+

@@ -2,8 +2,8 @@ import pytest
 
 @pytest.mark.check
 def test_change_name(user):
-    assert user.name == 'Anton'
+    assert user.name == 'Ilf'
 
 @pytest.mark.check
 def test_change_second_name(user):
-    assert user.second_name == 'Gorodetsky'
+    assert user.second_name == 'Petrov'

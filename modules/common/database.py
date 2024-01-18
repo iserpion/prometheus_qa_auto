@@ -113,7 +113,7 @@ class Database():
         return record
     
     def drop_order_details_table(self):
-        """Method for deletion of order_details table from database"""
+        """Method for deleting of order_details table from database"""
 
         query = "DROP TABLE order_details;"
         self.cursor.execute(query)
@@ -136,12 +136,37 @@ class Database():
         return record
     
     def select_product_with_max_description(self):
-        """Method for selection product description with maximum length"""
+        """Method for selecting product description with maximum length"""
 
         query = "SELECT description, \
                 length(description) as len \
                 FROM products \
                 ORDER BY len DESC \
+                LIMIT 1;"
+        self.cursor.execute(query)
+        record = self.cursor.fetchall()
+        return record
+    
+    def insert_customers(self):
+        """Method for inserting data to customers table"""
+
+        query = "INSERT OR REPLACE INTO customers \
+                VALUES (3, 'Petro', 'Nebesnoi sotni, 33', 'Odesa', '65012', 'Ukraine'), \
+                (4, 'Alina', 'Shevchenko, 12', 'Odesa', '65122', 'Ukraine'), \
+                (5, 'Nastia', 'Derebasivska, 15', 'Odesa', '65312', 'Ukraine'), \
+                (6, 'Leonid', 'Myru, 52', 'Izmail', '68014', 'Ukraine'), \
+                (7, 'Svetlana', 'Nezalezhnosti, 3', 'Izmail', '68017', 'Ukraine'), \
+                (8, 'Oleg', 'Lesi Ukrayinky, 16', 'Bucha', '08292', 'Ukraine');"
+        self.cursor.execute(query)
+        self.connection.commit()
+
+    def select_customers_city_max_count(self):
+        """Method for counting which city most appears in customers table"""
+
+        query = "SELECT city, count(city) as cnt \
+                FROM customers \
+                GROUP BY city \
+                ORDER BY cnt DESC \
                 LIMIT 1;"
         self.cursor.execute(query)
         record = self.cursor.fetchall()
