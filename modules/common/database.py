@@ -4,7 +4,7 @@ import sqlite3
 class Database():
 
     def __init__(self):
-        self.connection = sqlite3.connect(r'C:\\Users\\iserp\\qa_auto\\prometheus_qa_auto' + r'\\become_qa_auto.db')
+        self.connection = sqlite3.connect(r'C:\Users\iserp\qa_auto\prometheus_qa_auto' + r'\become_qa_auto.db')
         self.cursor = self.connection.cursor()
 
     def test_connection(self):
@@ -167,6 +167,41 @@ class Database():
                 FROM customers \
                 GROUP BY city \
                 ORDER BY cnt DESC \
+                LIMIT 1;"
+        self.cursor.execute(query)
+        record = self.cursor.fetchall()
+        return record
+
+    def insert_into_orders(self):
+        """Method for inserting data into orders table"""
+        
+        query = "INSERT INTO orders (id, customer_id, product_id) \
+                VALUES (2, 3, 3), \
+                (3, 4, 4), \
+                (4, 5, 5), \
+                (5, 6, 6), \
+                (6, 7, 6), \
+                (7, 5, 6), \
+                (8, 3, 6);"
+        self.cursor.execute(query)
+        self.connection.commit()
+
+    def delete_from_orders(self):
+        """Method for deleting from orders table"""
+        
+        query = "DELETE FROM orders \
+                WHERE id <> 1;"
+        self.cursor.execute(query)
+        self.connection.commit()
+
+    def select_bestseller(self):
+        """Method for selecting the best selling product"""
+        
+        query = "SELECT p.name, count(o.product_id) as qnt \
+                FROM orders o \
+                JOIN products p ON o.product_id = p.id \
+                GROUP BY o.product_id \
+                ORDER BY qnt DESC \
                 LIMIT 1;"
         self.cursor.execute(query)
         record = self.cursor.fetchall()

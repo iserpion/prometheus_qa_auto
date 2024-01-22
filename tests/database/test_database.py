@@ -95,7 +95,7 @@ def test_create_table_and_manipulate_with_it(db):
     (7, 'juice', 'banana', 14)
 ])
 def test_insert_products_multiple_times(db, id, name, description, quantity):
-    """Test that insert data in products table multiple times"""
+    """Test that inserts data into products table multiple times"""
 
     db.insert_product(id, name, description, quantity)
     qnt = db.select_product_qnt_by_id(id)
@@ -141,3 +141,10 @@ def test_max_city_count_in_customers(db):
     max_city = db.select_customers_city_max_count()
     # check the city is valid
     assert max_city[0][0] == 'Odesa'
+
+@pytest.mark.database
+def test_best_selling_product(insert_delete_orders):
+    """Test checks the best selling product"""
+
+    bestseller = insert_delete_orders.select_bestseller()
+    assert bestseller[0][0] == 'beer'
