@@ -31,11 +31,14 @@ def test_repo_with_single_char_be_found(github_api):
 
 # Individual part of project:
 @pytest.mark.api
-@pytest.mark.parametrize('branch_name',[
-    'main',
-    'testing',
-    'protected_test_branch'
-])
+@pytest.mark.parametrize(
+    'branch_name',
+    [
+        'main',
+        'testing',
+        'protected_test_branch'
+    ]
+)
 def test_repo_branches_are_listed(github_api, branch_name):
     """Test checks that GitHub API returns 
     list of branches for valid user and valid repo."""
@@ -104,26 +107,38 @@ def test_follower_site_admin_exists(github_api):
     assert is_admin == True, 'There is no site admin users in followers list'
 
 @pytest.mark.api
-@pytest.mark.parametrize('key, value', [
-        pytest.param('Server', 'GitHub.com', 
-                    id='Server',
+@pytest.mark.parametrize(
+    'key, value', 
+    [
+        pytest.param(
+            'Server', 
+            'GitHub.com', 
+            id='Server',
                      ),
-        pytest.param('Content-Type', 'application/json; charset=utf-8',
-                    id='Content-Type',
+        pytest.param(
+            'Content-Type', 
+            'application/json; charset=utf-8',
+            id='Content-Type',
                     ),
-        pytest.param('Vary', 'Accept, Accept-Encoding, Accept, X-Requested-With',
-                    id='Vary',
+        pytest.param(
+            'Vary', 
+            'Accept, Accept-Encoding, Accept, X-Requested-With',
+            id='Vary',
                     ),
-        pytest.param('Access-Control-Allow-Origin', '*',
-                    id='Access-Control-Allow-Origin',
+        pytest.param(
+            'Access-Control-Allow-Origin',
+             '*',
+            id='Access-Control-Allow-Origin',
                     ),
-        pytest.param('Content-Encoding', 'gzip',
-                    id='Content-Encoding',
+        pytest.param(
+            'Content-Encoding',
+            'gzip',
+            id='Content-Encoding',
                     )
     ]
 ) 
 def test_headers_in_followers_response(github_api, key, value):
-    """This test checks some headers in GitHub API followers response"""
+    """This test checks headers in GitHub API followers response"""
 
     response_headers = github_api.get_followers('defunkt').headers
 
