@@ -2,7 +2,6 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-
 @pytest.mark.ui
 def test_check_incorrect_username():
     # Creation an object for controlling browser
