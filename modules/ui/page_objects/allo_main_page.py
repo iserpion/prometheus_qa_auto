@@ -6,6 +6,8 @@ import time
 
 
 class Locators:
+    """Class for storing allo.ua main page locators"""
+
     PRE_ORDER_CLOSE_BTN = (By.XPATH, '//button[@aria-label="Close"]')
 
     # Top product current price locator can vary so such huge xpath is used
@@ -42,7 +44,7 @@ class MainPage(BasePage):
         self.driver.maximize_window()
 
         # scroll to top products section
-        self.driver.execute_script("window.scrollTo(0, 800)")
+        self.page_execute_script('scroll', 800)
 
         # close pre-order popup
         try:
@@ -57,10 +59,13 @@ class MainPage(BasePage):
             "product_price" : self.element_is_visible(Locators.TOP_PRODUCT_PRICE).text,
             }
         except TimeoutException:
-            print("Unable locate element on main page")
+            print("Unable to locate element on main page")
 
         # add product to cart
-        self.element_is_visible(Locators.TOP_PRODUCT_BUY_BTN).click()
+        try:
+            self.element_is_visible(Locators.TOP_PRODUCT_BUY_BTN).click()
+        except TimeoutException:
+            print("Unable to locate product button")
 
         # save data from cart popup
         try:
@@ -71,7 +76,7 @@ class MainPage(BasePage):
             "total_price" : self.element_is_visible(Locators.CART_TOTAL_PRICE).text,
             }
         except TimeoutException:
-            print("Unable locate element in cart popup")
+            print("Unable to locate element in cart popup")
 
         return self.product_data, self.cart_data
 

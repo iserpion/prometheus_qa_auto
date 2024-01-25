@@ -2,6 +2,7 @@ import pytest
 from modules.api.clients.github import GitHub
 from modules.common.database import Database
 from modules.ui.page_objects.allo_main_page import MainPage
+from modules.ui.page_objects.nova_delivery_page import DeliveryPage
 
 class User:
     def __init__(self) -> None:
@@ -51,6 +52,15 @@ def insert_delete_orders():
 @pytest.fixture
 def allo_page():
     page = MainPage()
+    page.go_to()
+
+    yield page
+
+    page.close()
+
+@pytest.fixture
+def nova_page():
+    page = DeliveryPage()
     page.go_to()
 
     yield page

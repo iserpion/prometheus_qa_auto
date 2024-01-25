@@ -79,6 +79,16 @@ def test_check_allo_change_product_qty_in_cart(allo_page):
     assert decrease_result
 
 
+@pytest.mark.ui
+def test_check_novaposhta_delivery_cost(nova_page):
+    """Test checks NovaPoshta delivery calculation"""
+
+    nova_page.fill_fields()
+    nova_page.calculate_delivery()
+    expected_text = 'Вартість перевезення 205.00 ... 210.00грн'
+
+    # Step 1: check that calculated cost is shown
+    assert nova_page.calculated_cost == expected_text
 
 
 
