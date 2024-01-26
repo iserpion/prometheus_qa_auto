@@ -143,5 +143,3 @@ def test_headers_in_followers_response(github_api, key, value):
     response_headers = github_api.get_followers('defunkt').headers
 
     assert response_headers[key] == value, f'{key} header is not existed in response'
-
-

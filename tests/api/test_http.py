@@ -21,3 +21,4 @@ def test_status_code_request():
     r = requests.get('https://api.github.com/users/sergii_butenko')
 
     assert r.status_code == 404
+    

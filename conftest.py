@@ -3,6 +3,8 @@ from modules.api.clients.github import GitHub
 from modules.common.database import Database
 from modules.ui.page_objects.allo_main_page import MainPage
 from modules.ui.page_objects.nova_delivery_page import DeliveryPage
+from modules.ui.page_objects.carid_login_page import LoginPage
+from modules.ui.page_objects.carid_myaccount_page import MyAccountPage
 
 class User:
     def __init__(self) -> None:
@@ -66,3 +68,20 @@ def nova_page():
     yield page
 
     page.close()
+
+@pytest.fixture()
+def carid_login():
+    page = LoginPage()
+        
+    yield page
+
+    page.close()
+
+@pytest.fixture(scope='module')
+def carid_my_account():
+    page = MyAccountPage()
+
+    yield page
+
+    page.close()
+    

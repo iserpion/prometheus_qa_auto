@@ -33,3 +33,4 @@ def test_check_incorrect_username():
 
     # Close browser
     driver.close()
+    

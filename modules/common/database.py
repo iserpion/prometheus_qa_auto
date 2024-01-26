@@ -206,3 +206,4 @@ class Database():
         self.cursor.execute(query)
         record = self.cursor.fetchall()
         return record
+    

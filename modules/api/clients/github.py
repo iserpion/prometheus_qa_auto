@@ -49,3 +49,4 @@ class GitHub:
     def get_followers(self, username):
         response = requests.get(f'https://api.github.com/users/{username}/followers')
         return response
+    

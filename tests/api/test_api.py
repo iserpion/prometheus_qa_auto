@@ -12,3 +12,4 @@ def test_name(user):
 @pytest.mark.check
 def test_second_name(user):
     assert user.second_name == 'Petrov'
+    

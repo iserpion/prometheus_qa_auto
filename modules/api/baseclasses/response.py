@@ -21,3 +21,4 @@ class Response:
         f'Requested url: {self.response_full.url} \n' \
         f'Response body: {self.response_json} \n' \
         f'Response headers: {self.response_full.headers}'
+    

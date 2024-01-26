@@ -94,5 +94,3 @@ class DeliveryPage(BasePage):
         self.calculated_cost = calculated_cost_element.text
 
         return self.calculated_cost
-
-
