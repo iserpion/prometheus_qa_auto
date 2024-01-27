@@ -37,7 +37,7 @@ class DeliveryPage(BasePage):
         self.driver.get(DeliveryPage.URL)
 
     def fill_fields(self):
-        """Method for filling delivery page fields and submit"""
+        """Method for filling delivery page fields"""
 
         # select origin city
         self.element_is_visible(Locators.ORIGIN_CITY_DROPDOWN).click()

@@ -6,6 +6,8 @@ from modules.common.generators.address_generator import generated_shipping_addre
 
 
 class Locators:
+    """Class for storing carid.com MyAccount page locators"""
+
     ACCOUNT_SETTINGS = (By.XPATH, '//div[contains(text(),"Settings")]')
     S_ADDRESS_ADD_NEW_BTN = (By.XPATH, '//button[@data-controller="shipping"]')
     FIRST_NAME = (By.ID, 'firstname')
@@ -59,41 +61,57 @@ class MyAccountPage(BasePage):
         ]
 
         # prepare page
-        account_settings = self.element_is_present(Locators.ACCOUNT_SETTINGS)
-        self.actions.scroll_to_element(account_settings)
+        try:
+            account_settings = self.element_is_present(Locators.ACCOUNT_SETTINGS)
+            self.actions.scroll_to_element(account_settings)
+        except TimeoutException:
+            print("Account settings element is not present")
 
         # open shipping address form
-        self.element_is_visible(Locators.S_ADDRESS_ADD_NEW_BTN).click()
+        try:
+            self.element_is_visible(Locators.S_ADDRESS_ADD_NEW_BTN).click()
+        except TimeoutException:
+            print("Add new shipping address button is not visible")
 
         # fill the form
-        self.element_is_visible(Locators.FIRST_NAME).send_keys(self.ship_address_data[0])
-        self.element_is_visible(Locators.LAST_NAME).send_keys(self.ship_address_data[1])
-        self.element_is_visible(Locators.COMPANY).send_keys(self.ship_address_data[2])
-        self.element_is_visible(Locators.S_ADDRESS).send_keys(self.ship_address_data[3])
-        self.element_is_visible(Locators.ADDRESS_2).send_keys(self.ship_address_data[4])
-        self.element_is_visible(Locators.S_CITY).send_keys(self.ship_address_data[5])
-        self.element_is_visible(Locators.S_STATE_DROPDOWN).click()
-        self.element_is_visible(Locators.STATE).click()
-        self.element_is_visible(Locators.S_ZIPCODE).send_keys(self.ship_address_data[8])
-        self.element_is_visible(Locators.PHONE).send_keys(self.ship_address_data[9])
+        try:
+            self.element_is_visible(Locators.FIRST_NAME).send_keys(self.ship_address_data[0])
+            self.element_is_visible(Locators.LAST_NAME).send_keys(self.ship_address_data[1])
+            self.element_is_visible(Locators.COMPANY).send_keys(self.ship_address_data[2])
+            self.element_is_visible(Locators.S_ADDRESS).send_keys(self.ship_address_data[3])
+            self.element_is_visible(Locators.ADDRESS_2).send_keys(self.ship_address_data[4])
+            self.element_is_visible(Locators.S_CITY).send_keys(self.ship_address_data[5])
+            self.element_is_visible(Locators.S_STATE_DROPDOWN).click()
+            self.element_is_visible(Locators.STATE).click()
+            self.element_is_visible(Locators.S_ZIPCODE).send_keys(self.ship_address_data[8])
+            self.element_is_visible(Locators.PHONE).send_keys(self.ship_address_data[9])
+        except TimeoutException:
+            print("Some of add shipping address form elements are not visible")
 
         # submit form
-        self.actions.scroll_by_amount(0, 100).perform()
-        self.element_is_visible(Locators.SUBMIT_BTN).click()
+        try: 
+            self.actions.scroll_by_amount(0, 100).perform()
+            self.element_is_visible(Locators.SUBMIT_BTN).click()
+        except TimeoutException:
+            print("Add shipping address submit button is not visible")
 
         # close modal
-        self.element_is_visible(Locators.MODAL_BTN).click()
+        try:
+            self.element_is_visible(Locators.MODAL_BTN).click()
+        except TimeoutException:
+            print("Successfully added shipping address popup OK button is not visible")
 
         # store shipping address data from My Account page
-        self.ship_address_info = self.element_is_visible(Locators.S_ADDRESS_INFO).text
+        try:
+            self.ship_address_info = self.element_is_visible(Locators.S_ADDRESS_INFO).text
+        except TimeoutException:
+            print("Shipping address info element is not visible")
 
         return self.ship_address_info
 
   
     def  add_billing_address(self):
-        """Method adding shipping address info on My Account page"""
-
-        # LoginPage.login(self)
+        """Method adding billing address info on My Account page"""
 
         # generate data for billing address form
         billing_address = generated_billing_address()
@@ -113,32 +131,48 @@ class MyAccountPage(BasePage):
         ]
 
         # open billing address form
-        self.element_is_visible(Locators.B_ADDRESS_ADD_NEW_BTN).click()
+        try:
+            self.element_is_visible(Locators.B_ADDRESS_ADD_NEW_BTN).click()
+        except TimeoutException:
+            print("Add new billing address button is not visible")
 
         # fill the form
-        self.element_is_visible(Locators.FIRST_NAME).send_keys(self.bill_address_data[0])
-        self.element_is_visible(Locators.LAST_NAME).send_keys(self.bill_address_data[1])
-        self.element_is_visible(Locators.COMPANY).send_keys(self.bill_address_data[2])
-        self.element_is_visible(Locators.B_ADDRESS).send_keys(self.bill_address_data[3])
-        self.element_is_visible(Locators.ADDRESS_2).send_keys(self.bill_address_data[4])
-        self.element_is_visible(Locators.B_CITY).send_keys(self.bill_address_data[5])
-        self.element_is_visible(Locators.B_STATE_DROPDOWN).click()
-        self.element_is_visible(Locators.STATE).click()
-        self.element_is_visible(Locators.B_ZIPCODE).send_keys(self.bill_address_data[8])
-        self.element_is_visible(Locators.PHONE).send_keys(self.bill_address_data[9])
+        try:
+            self.element_is_visible(Locators.FIRST_NAME).send_keys(self.bill_address_data[0])
+            self.element_is_visible(Locators.LAST_NAME).send_keys(self.bill_address_data[1])
+            self.element_is_visible(Locators.COMPANY).send_keys(self.bill_address_data[2])
+            self.element_is_visible(Locators.B_ADDRESS).send_keys(self.bill_address_data[3])
+            self.element_is_visible(Locators.ADDRESS_2).send_keys(self.bill_address_data[4])
+            self.element_is_visible(Locators.B_CITY).send_keys(self.bill_address_data[5])
+            self.element_is_visible(Locators.B_STATE_DROPDOWN).click()
+            self.element_is_visible(Locators.STATE).click()
+            self.element_is_visible(Locators.B_ZIPCODE).send_keys(self.bill_address_data[8])
+            self.element_is_visible(Locators.PHONE).send_keys(self.bill_address_data[9])
+        except TimeoutException:
+            print("Some of add billing address form elements are not visible")
 
         # submit form
-        self.actions.scroll_by_amount(0, 100).perform()
-        self.element_is_visible(Locators.SUBMIT_BTN).click()
+        try:
+            self.actions.scroll_by_amount(0, 100).perform()
+            self.element_is_visible(Locators.SUBMIT_BTN).click()
+        except TimeoutException:
+            print("Add billing address submit button is not visible")
 
         # close modal
-        self.element_is_visible(Locators.MODAL_BTN).click()
+        try:
+            self.element_is_visible(Locators.MODAL_BTN).click()
+        except TimeoutException:
+            print("Successfully added billing address popup OK button is not visible")
 
         # store billing address data from My Account page
-        self.bill_address_info = self.element_is_visible(Locators.B_ADDRESS_INFO).text
+        try:
+            self.bill_address_info = self.element_is_visible(Locators.B_ADDRESS_INFO).text
+        except TimeoutException:
+            print("Billing address info element is not visible")
 
         return self.bill_address_info
     
+
     def validate_address_info(self, address_type):
         """Method for validating shipping/billing address info on My Account page"""
 
@@ -153,7 +187,6 @@ class MyAccountPage(BasePage):
             address_data_info = self.bill_address_info
         else:
             print("Invalid address_type is given, should be 'shipping' or 'billing'")
-
 
         self.is_equal = False
         for el in address_data:

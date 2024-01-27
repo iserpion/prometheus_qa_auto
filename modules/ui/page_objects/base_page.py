@@ -10,13 +10,18 @@ class BasePage:
         
         _options = Options()
         
-        # Add option to dismiss Chrome notifications "alert"
-        _prefs = {"profile.default_content_setting_values.notifications": 2}
+        # Add option to disable Chrome allow notifications prompt
+        # Add option to disable Chrome autofill e.g. save address prompt
+        _prefs = {
+            "profile.default_content_setting_values.notifications": 2,
+            "autofill.profile_enabled": False
+            }
+        
         _options.add_experimental_option("prefs", _prefs)
 
         # Add option to not automatically close browser
         _options.add_experimental_option("detach", True)
-        
+
         # driver
         self.driver = webdriver.Chrome(options = _options)
 
