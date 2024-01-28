@@ -1,6 +1,9 @@
 from modules.ui.page_objects.base_page import BasePage
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import (
+    TimeoutException,
+    ElementClickInterceptedException,
+)
 from random import randint
 import time
 
@@ -15,7 +18,10 @@ class Locators:
     buy_btn_x = f'//div[@data-products-type="top"]/descendant::button[@class="v-btn--cart"][{top10}]'
 
     TOP_PRODUCT_BUY_BTN = (By.XPATH, buy_btn_x)
-    TOP_PRODUCT_TITLE = (By.XPATH, f'{buy_btn_x}/preceding::a[@class="product-card__title h-pc__title"][1]')
+    TOP_PRODUCT_TITLE = (
+        By.XPATH,
+        f'{buy_btn_x}/preceding::a[@class="product-card__title h-pc__title"][1]',
+    )
     TOP_PRODUCT_PRICE = (By.XPATH, f'{buy_btn_x}/preceding::span[@class="sum"][1]')
     CART_POPUP_TITLE = (By.XPATH, '//span[@class="v-modal__cmp-header-title"]')
     CART_PRODUCT_PRICE = (By.XPATH, '//div[@class="price-box__cur"]')
@@ -29,6 +35,8 @@ class Locators:
 
 
 class MainPage(BasePage):
+    """Class holds elements and methods of allo.ua main page"""
+
     URL = "https://allo.ua/"
 
     def __init__(self) -> None:
@@ -44,7 +52,7 @@ class MainPage(BasePage):
         self.driver.maximize_window()
 
         # scroll to top products section
-        self.page_execute_script('scroll', 800)
+        self.page_execute_script("scroll", 800)
 
         # close pre-order popup
         try:
@@ -55,8 +63,12 @@ class MainPage(BasePage):
         # save product data on main page
         try:
             self.product_data = {
-            "product_title" : self.element_is_visible(Locators.TOP_PRODUCT_TITLE).text,
-            "product_price" : self.element_is_visible(Locators.TOP_PRODUCT_PRICE).text,
+                "product_title": self.element_is_visible(
+                    Locators.TOP_PRODUCT_TITLE
+                ).text,
+                "product_price": self.element_is_visible(
+                    Locators.TOP_PRODUCT_PRICE
+                ).text,
             }
         except TimeoutException:
             print("Unable to locate element on main page")
@@ -70,10 +82,14 @@ class MainPage(BasePage):
         # save data from cart popup
         try:
             self.cart_data = {
-            "popup_title" : self.element_is_visible(Locators.CART_POPUP_TITLE).text,
-            "product_title" : self.element_is_visible(Locators.CART_PRODUCT_TITLE).text,
-            "product_price" : self.element_is_visible(Locators.CART_PRODUCT_PRICE).text,
-            "total_price" : self.element_is_visible(Locators.CART_TOTAL_PRICE).text,
+                "popup_title": self.element_is_visible(Locators.CART_POPUP_TITLE).text,
+                "product_title": self.element_is_visible(
+                    Locators.CART_PRODUCT_TITLE
+                ).text,
+                "product_price": self.element_is_visible(
+                    Locators.CART_PRODUCT_PRICE
+                ).text,
+                "total_price": self.element_is_visible(Locators.CART_TOTAL_PRICE).text,
             }
         except TimeoutException:
             print("Unable to locate element in cart popup")
@@ -82,7 +98,8 @@ class MainPage(BasePage):
 
     def get_nums_from_str(self, string):
         """Method for getting numbers from string.
-        It is needed as prices strings on allo.ua can contain spaces and special characters"""
+        It is needed as prices strings on allo.ua can contain spaces and special characters
+        """
 
         return int("".join(char for char in string if char.isdigit()))
 
@@ -90,66 +107,101 @@ class MainPage(BasePage):
         """Method for removing product from cart popup"""
 
         # remove product from cart
-        self.element_is_visible(Locators.CART_REMOVE_BTN).click()
+        try:
+            self.element_is_visible(Locators.CART_REMOVE_BTN).click()
+        except (TimeoutException, ElementClickInterceptedException):
+            print("Product remove button is not visible or clickable")
 
         # save empty cart message
-        self.empty_cart_msg = self.element_is_visible(Locators.CART_EMPTY_MSG).text
+        try:
+            self.empty_cart_msg = self.element_is_visible(Locators.CART_EMPTY_MSG).text
+        except TimeoutException:
+            print("Cart empty message is not visible")
 
         return self.empty_cart_msg
-    
+
     def increase_product_qty_in_cart(self):
         """Method for increasing quantity of product in cart"""
 
         # increase product quantity
-        self.element_is_visible(Locators.CART_QTY_PLUS).click()
-        self.element_is_visible(Locators.CART_QTY_PLUS).click()
-        
-        # add explicit wait as after increasing need some time to price locators are updated 
+        try:
+            self.element_is_visible(Locators.CART_QTY_PLUS).click()
+            self.element_is_visible(Locators.CART_QTY_PLUS).click()
+        except (TimeoutException, ElementClickInterceptedException):
+            print("Increase qty button is not visible or clickable")
+
+        # add explicit wait as after increasing need some time to price locators are updated
         time.sleep(1)
 
         # save data after increasing
-        self.increase_data = {
-            "product_price" : self.get_nums_from_str(self.product_data['product_price']),
-            "cart_price" : self.get_nums_from_str(self.element_is_visible(Locators.CART_PRODUCT_PRICE).text),
-            "total_price" : self.get_nums_from_str(self.element_is_visible(Locators.CART_TOTAL_PRICE).text), 
-        }
-    
+        try:
+            self.increase_data = {
+                "product_price": self.get_nums_from_str(
+                    self.product_data["product_price"]
+                ),
+                "cart_price": self.get_nums_from_str(
+                    self.element_is_visible(Locators.CART_PRODUCT_PRICE).text
+                ),
+                "total_price": self.get_nums_from_str(
+                    self.element_is_visible(Locators.CART_TOTAL_PRICE).text
+                ),
+            }
+        except TimeoutException:
+            print("Cart prices are not visible")
+
     def decrease_product_qty_in_cart(self):
         """Method for decreasing quantity of product in cart"""
 
         # decrease product quantity
-        self.element_is_visible(Locators.CART_QTY_MINUS).click()
-        
-        # add explicit wait as after decreasing need some time to price locators are updated 
-        time.sleep(1)
-        
-        # save data after decreasing
-        self.decrease_data = {
-            "product_price" : self.get_nums_from_str(self.product_data['product_price']),
-            "cart_price" : self.get_nums_from_str(self.element_is_visible(Locators.CART_PRODUCT_PRICE).text),
-            "total_price" : self.get_nums_from_str(self.element_is_visible(Locators.CART_TOTAL_PRICE).text), 
-        }
+        try:
+            self.element_is_visible(Locators.CART_QTY_MINUS).click()
+        except (TimeoutException, ElementClickInterceptedException):
+            print("Decrease qty button is not visible or clickable")
 
+        # add explicit wait as after decreasing need some time to price locators are updated
+        time.sleep(1)
+
+        # save data after decreasing
+        try:
+            self.decrease_data = {
+                "product_price": self.get_nums_from_str(
+                    self.product_data["product_price"]
+                ),
+                "cart_price": self.get_nums_from_str(
+                    self.element_is_visible(Locators.CART_PRODUCT_PRICE).text
+                ),
+                "total_price": self.get_nums_from_str(
+                    self.element_is_visible(Locators.CART_TOTAL_PRICE).text
+                ),
+            }
+        except TimeoutException:
+            print("Cart prices are not visible")
 
     def validate_increase_decrease(self, operation):
         """Method for validating that product quantity is increased/decreased"""
 
-        if operation == 'increase':
+        if operation == "increase":
             # retrieving and store price data after increasing
-            product_price_in = self.increase_data['product_price']
-            cart_price_in = self.increase_data['cart_price']
-            total_price_in = self.increase_data['total_price']
+            product_price_in = self.increase_data["product_price"]
+            cart_price_in = self.increase_data["cart_price"]
+            total_price_in = self.increase_data["total_price"]
 
-            return cart_price_in == product_price_in * 3 and total_price_in == cart_price_in  # after increasing qty = 3
-        
-        elif operation == 'decrease':
+            return (
+                cart_price_in == product_price_in * 3
+                and total_price_in == cart_price_in
+            )  # after increasing qty = 3
+
+        elif operation == "decrease":
             # retrieving and store price data after decreasing
-            product_price_de = self.decrease_data['product_price']
-            cart_price_de = self.decrease_data['cart_price']
-            total_price_de = self.decrease_data['total_price']
+            product_price_de = self.decrease_data["product_price"]
+            cart_price_de = self.decrease_data["cart_price"]
+            total_price_de = self.decrease_data["total_price"]
 
-            return cart_price_de == product_price_de * 2 and total_price_de == cart_price_de  # after decreasing qty = 2
-        
+            return (
+                cart_price_de == product_price_de * 2
+                and total_price_de == cart_price_de
+            )  # after decreasing qty = 2
+
         else:
             result = "Invalid operation is given, use 'increase' or 'decrease'"
             print(result)
