@@ -122,6 +122,7 @@ class Database():
     def select_min_max_avg_product_qty(self,operand):
         """Method for calculation min, max or avg of products quantity"""
 
+        query = ""
         if operand == 'min':
             query = "SELECT min(quantity) FROM products;"
         elif operand == 'max':
