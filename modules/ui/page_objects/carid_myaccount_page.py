@@ -39,6 +39,11 @@ class MyAccountPage(BasePage):
 
     def __init__(self) -> None:
         super().__init__()
+        self.ship_address_data = []
+        self.ship_address_info = None
+        self.bill_address_data = []
+        self.bill_address_info = None
+        self.is_address_equal = False
 
     def add_shipping_address(self):
         """Method adding shipping address info on My Account page"""
@@ -220,11 +225,10 @@ class MyAccountPage(BasePage):
         else:
             print("Invalid address_type is given, should be 'shipping' or 'billing'")
 
-        self.is_equal = False
         for el in address_data:
             if el in address_data_info:
-                self.is_equal = True
+                self.is_address_equal = True
             else:
-                self.is_equal = False
+                self.is_address_equal = False
 
-        return self.is_equal
+        return self.is_address_equal

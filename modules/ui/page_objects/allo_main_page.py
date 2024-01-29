@@ -41,6 +41,11 @@ class MainPage(BasePage):
 
     def __init__(self) -> None:
         super().__init__()
+        self.product_data = {}
+        self.cart_data = {}
+        self.empty_cart_msg = ""
+        self.increase_data = {}
+        self.decrease_data = {}
 
     def go_to(self):
         self.driver.get(MainPage.URL)
@@ -96,7 +101,8 @@ class MainPage(BasePage):
 
         return self.product_data, self.cart_data
 
-    def get_nums_from_str(self, string):
+    @staticmethod
+    def get_nums_from_str(string):
         """Method for getting numbers from string.
         It is needed as prices strings on allo.ua can contain spaces and special characters
         """
@@ -203,5 +209,4 @@ class MainPage(BasePage):
             )  # after decreasing qty = 2
 
         else:
-            result = "Invalid operation is given, use 'increase' or 'decrease'"
-            print(result)
+            print("Invalid operation is given, use 'increase' or 'decrease'")

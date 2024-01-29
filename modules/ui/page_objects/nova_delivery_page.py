@@ -45,6 +45,7 @@ class DeliveryPage(BasePage):
 
     def __init__(self) -> None:
         super().__init__()
+        self.calculated_cost = ""
 
     def go_to(self):
         self.driver.get(DeliveryPage.URL)

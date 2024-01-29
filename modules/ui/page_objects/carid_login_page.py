@@ -19,6 +19,7 @@ class LoginPage(BasePage):
 
     def __init__(self) -> None:
         super().__init__()
+        self.current_url = None
 
     def login(self):
         """Method to login as a new customer to carid.com"""
