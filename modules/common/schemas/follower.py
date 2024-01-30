@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class Follower(BaseModel):
     login: str
     id: int
@@ -19,4 +20,3 @@ class Follower(BaseModel):
     received_events_url: str
     type: str
     site_admin: bool
-    

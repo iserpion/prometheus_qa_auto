@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional
 
+
 @dataclass
 class Address:
     first_name: str
@@ -13,4 +14,3 @@ class Address:
     country: str
     zipcode: str
     phone: str
-    

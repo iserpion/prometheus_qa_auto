@@ -99,7 +99,7 @@ def test_check_novaposhta_delivery_cost(nova_page):
 
 
 @pytest.mark.ui
-@pytest.mark.parametrize('carid_page', ['login'], indirect=True)
+@pytest.mark.parametrize("carid_page", ["login"], indirect=True)
 def test_check_carid_login(carid_page):
     """Test checks login to carid.com"""
 
@@ -111,7 +111,7 @@ def test_check_carid_login(carid_page):
 
 
 @pytest.mark.ui
-@pytest.mark.parametrize('carid_page', ['my_account'], indirect=True)
+@pytest.mark.parametrize("carid_page", ["my_account"], indirect=True)
 def test_check_carid_add_ship_address(carid_page):
     carid_page.add_shipping_address()
 
@@ -120,7 +120,7 @@ def test_check_carid_add_ship_address(carid_page):
 
 
 @pytest.mark.ui
-@pytest.mark.parametrize('carid_page', ['my_account'], indirect=True)
+@pytest.mark.parametrize("carid_page", ["my_account"], indirect=True)
 def test_check_carid_add_bill_address(carid_page):
     carid_page.add_billing_address()
 

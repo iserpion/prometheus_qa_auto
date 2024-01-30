@@ -101,7 +101,11 @@ def test_create_table_and_manipulate_with_it(db):
 @pytest.mark.database
 @pytest.mark.parametrize(
     "id, name, description, quantity",
-    [(5, "meat", "chicken", 9), (6, "beer", "lager", 24), (7, "juice", "banana", 14)],
+    [
+        (5, "meat", "chicken", 9), 
+        (6, "beer", "lager", 24), 
+        (7, "juice", "banana", 14)
+    ],
 )
 def test_insert_products_multiple_times(db, id, name, description, quantity):
     """Test that inserts data into products table multiple times"""

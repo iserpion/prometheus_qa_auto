@@ -12,8 +12,8 @@ class User:
         self.second_name = None
     
     def create(self):
-        self.name = 'Ilf'
-        self.second_name = 'Petrov'
+        self.name = 'Ivan'
+        self.second_name = 'Serpionov'
     
     def remove(self):
         self.name = ''

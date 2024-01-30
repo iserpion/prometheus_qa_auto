@@ -1,24 +1,25 @@
 import sqlite3
 
 
-class Database():
-
+class Database:
     def __init__(self):
-        self.connection = sqlite3.connect(r'C:\Users\iserp\qa_auto\prometheus_qa_auto' + r'\become_qa_auto.db')
+        self.connection = sqlite3.connect(
+            r"C:\Users\iserp\qa_auto\prometheus_qa_auto" + r"\become_qa_auto.db"
+        )
         self.cursor = self.connection.cursor()
 
     def test_connection(self):
-        sqlite_select_query = 'SELECT sqlite_version();'
+        sqlite_select_query = "SELECT sqlite_version();"
         self.cursor.execute(sqlite_select_query)
         record = self.cursor.fetchall()
-        print(f'Connected successfully. SQLite Database Version is: {record}')
+        print(f"Connected successfully. SQLite Database Version is: {record}")
 
     def get_all_users(self):
-        query = 'SELECT name, address, city FROM customers'
+        query = "SELECT name, address, city FROM customers"
         self.cursor.execute(query)
         record = self.cursor.fetchall()
         return record
-    
+
     def get_user_address_by_name(self, name):
         query = f"SELECT address, city, postalCode, country FROM customers WHERE name = '{name}'"
         self.cursor.execute(query)
@@ -29,13 +30,13 @@ class Database():
         query = f"UPDATE products SET quantity = {qnt} WHERE id = {product_id}"
         self.cursor.execute(query)
         self.connection.commit()
-    
+
     def select_product_qnt_by_id(self, product_id):
         query = f"SELECT quantity FROM products WHERE id = {product_id}"
         self.cursor.execute(query)
         record = self.cursor.fetchall()
         return record
-    
+
     def insert_product(self, product_id, name, description, qnt):
         query = f"INSERT OR REPLACE INTO products (id, name, description, quantity) \
             VALUES ({product_id}, '{name}', '{description}', {qnt})"
@@ -46,7 +47,7 @@ class Database():
         query = f"DELETE FROM products WHERE id in ({product_id})"
         self.cursor.execute(query)
         self.connection.commit()
-    
+
     def get_detailed_orders(self):
         query = "SELECT o.id, c.name, p.name, \
                 p.description, o.order_date \
@@ -56,7 +57,7 @@ class Database():
         self.cursor.execute(query)
         record = self.cursor.fetchall()
         return record
-    
+
     def pure_insert_product(self, product_id, name, description, qnt):
         """Method for pure inserting data to products table"""
 
@@ -66,36 +67,36 @@ class Database():
             self.cursor.execute(query)
             self.connection.commit()
         except sqlite3.IntegrityError:
-            print('An error occurred while inserting data')
-     
-    def select_count_product_by_id(self,id):
+            print("An error occurred while inserting data")
+
+    def select_count_product_by_id(self, id):
         """Method for calculation count of given product in products table"""
 
         query = f"SELECT count(id) from products WHERE id = {id}"
         self.cursor.execute(query)
         record = self.cursor.fetchall()
         return record
-    
+
     def create_table_order_details(self):
         """Method creates order_details table"""
 
-        query = 'CREATE TABLE IF NOT EXISTS order_details ( \
+        query = "CREATE TABLE IF NOT EXISTS order_details ( \
                 id INT PRIMARY KEY  NOT NULL, \
                 order_id INT NOT NULL, \
                 amount INT NOT NULL, \
                 FOREIGN KEY(order_id) REFERENCES orders(id) \
-                );'
+                );"
         self.cursor.execute(query)
         self.connection.commit()
-    
+
     def select_name_from_sqlite_schema(self):
         """Method retrieves names of existing tables in SQLite DB"""
 
-        query = 'SELECT name FROM sqlite_schema;'
+        query = "SELECT name FROM sqlite_schema;"
         self.cursor.execute(query)
         record = self.cursor.fetchall()
         return record
-    
+
     def insert_order_details(self, id, order_id, amount):
         """Method inserts data into order_details table"""
 
@@ -103,7 +104,7 @@ class Database():
                 VALUES ({id}, {order_id}, {amount});"
         self.cursor.execute(query)
         self.connection.commit()
-    
+
     def select_order_details(self):
         """Method for retrieving data from order_details table"""
 
@@ -111,7 +112,7 @@ class Database():
         self.cursor.execute(query)
         record = self.cursor.fetchall()
         return record
-    
+
     def drop_order_details_table(self):
         """Method for deleting of order_details table from database"""
 
@@ -119,15 +120,15 @@ class Database():
         self.cursor.execute(query)
         self.connection.commit()
 
-    def select_min_max_avg_product_qty(self,operand):
+    def select_min_max_avg_product_qty(self, operand):
         """Method for calculation min, max or avg of products quantity"""
 
         query = ""
-        if operand == 'min':
+        if operand == "min":
             query = "SELECT min(quantity) FROM products;"
-        elif operand == 'max':
+        elif operand == "max":
             query = "SELECT max(quantity) FROM products;"
-        elif operand == 'avg':
+        elif operand == "avg":
             query = "SELECT round(avg(quantity),0) FROM products;"
         else:
             print("Invalid operand, please use 'min' or 'max' or 'avg'")
@@ -135,7 +136,7 @@ class Database():
         self.cursor.execute(query)
         record = self.cursor.fetchall()
         return record
-    
+
     def select_product_with_max_description(self):
         """Method for selecting product description with maximum length"""
 
@@ -147,7 +148,7 @@ class Database():
         self.cursor.execute(query)
         record = self.cursor.fetchall()
         return record
-    
+
     def insert_customers(self):
         """Method for inserting data to customers table"""
 
@@ -175,7 +176,7 @@ class Database():
 
     def insert_into_orders(self):
         """Method for inserting data into orders table"""
-        
+
         query = "INSERT INTO orders (id, customer_id, product_id) \
                 VALUES (2, 3, 3), \
                 (3, 4, 4), \
@@ -189,7 +190,7 @@ class Database():
 
     def delete_from_orders(self):
         """Method for deleting from orders table"""
-        
+
         query = "DELETE FROM orders \
                 WHERE id <> 1;"
         self.cursor.execute(query)
@@ -197,7 +198,7 @@ class Database():
 
     def select_bestseller(self):
         """Method for selecting the best selling product"""
-        
+
         query = "SELECT p.name, count(o.product_id) as qnt \
                 FROM orders o \
                 JOIN products p ON o.product_id = p.id \
@@ -207,4 +208,3 @@ class Database():
         self.cursor.execute(query)
         record = self.cursor.fetchall()
         return record
-    
