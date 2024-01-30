@@ -99,27 +99,30 @@ def test_check_novaposhta_delivery_cost(nova_page):
 
 
 @pytest.mark.ui
-def test_check_carid_login(carid_login):
+@pytest.mark.parametrize('carid_page', ['login'], indirect=True)
+def test_check_carid_login(carid_page):
     """Test checks login to carid.com"""
 
-    carid_login.login()
+    carid_page.login()
     expected_url = "https://www.carid.com/my-account/"
 
     # check that new user is logged in
-    assert carid_login.current_url == expected_url
+    assert carid_page.current_url == expected_url
 
 
 @pytest.mark.ui
-def test_check_carid_add_ship_address(carid_my_account):
-    carid_my_account.add_shipping_address()
+@pytest.mark.parametrize('carid_page', ['my_account'], indirect=True)
+def test_check_carid_add_ship_address(carid_page):
+    carid_page.add_shipping_address()
 
     # check that shipping address info is added to My Account page
-    assert carid_my_account.validate_address_info("shipping")
+    assert carid_page.validate_address_info("shipping")
 
 
 @pytest.mark.ui
-def test_check_carid_add_bill_address(carid_my_account):
-    carid_my_account.add_billing_address()
+@pytest.mark.parametrize('carid_page', ['my_account'], indirect=True)
+def test_check_carid_add_bill_address(carid_page):
+    carid_page.add_billing_address()
 
     # check that billing address info is added to My Account page
-    assert carid_my_account.validate_address_info("billing")
+    assert carid_page.validate_address_info("billing")

@@ -69,17 +69,14 @@ def nova_page():
 
     page.close()
 
-@pytest.fixture()
-def carid_login():
-    page = LoginPage()
-        
-    yield page
-
-    page.close()
-
 @pytest.fixture(scope='module')
-def carid_my_account():
-    page = MyAccountPage()
+def carid_page(request):
+    param = request.param
+
+    if param == 'login':
+        page = LoginPage()
+    elif param == 'my_account':
+        page = MyAccountPage()
 
     yield page
 
