@@ -136,7 +136,8 @@ class MainPage(BasePage):
         except (TimeoutException, ElementClickInterceptedException):
             print("Increase qty button is not visible or clickable")
 
-        # add explicit wait as after increasing need some time to price locators are updated
+        # add explicit wait as after increasing need some time to cart prices are updated
+        # strategies from expected_conditions modules are not applicable here 
         time.sleep(1)
 
         # save data after increasing
@@ -164,7 +165,8 @@ class MainPage(BasePage):
         except (TimeoutException, ElementClickInterceptedException):
             print("Decrease qty button is not visible or clickable")
 
-        # add explicit wait as after decreasing need some time to price locators are updated
+        # add explicit wait as after decreasing need some time to cart prices are updated
+        # strategies from expected_conditions modules are not applicable here 
         time.sleep(1)
 
         # save data after decreasing

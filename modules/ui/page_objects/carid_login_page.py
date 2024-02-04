@@ -46,7 +46,7 @@ class LoginPage(BasePage):
             print("Login form fields are not visible")
 
         # wait for login is performed and get current url
-        time.sleep(1)
+        self.title_is_updated("CARiD.com - My Account")
         self.current_url = self.driver.current_url
 
         return self.current_url

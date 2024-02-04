@@ -38,6 +38,11 @@ class BasePage:
         """Method for waiting until element is visible. Returns element object"""
 
         return Wait(self.driver, timeout).until(EC.presence_of_element_located(locator))
+    
+    def title_is_updated(self, title, timeout=10):
+        """Method for waiting until page title is updated"""
+
+        return Wait(self.driver, timeout).until(EC.title_is(title))
 
     def page_execute_script(self, type, value):
         """Method for executing JS scripts on page"""

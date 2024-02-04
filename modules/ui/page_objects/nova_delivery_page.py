@@ -4,7 +4,6 @@ from selenium.common.exceptions import (
     TimeoutException,
     ElementClickInterceptedException,
 )
-import time
 
 
 class Locators:
@@ -129,9 +128,6 @@ class DeliveryPage(BasePage):
             self.element_is_visible(Locators.CALCULATE_DELIVERY_BTN).click()
         except (TimeoutException, ElementClickInterceptedException):
             print("Calculate delivery button is not visible or clickable")
-
-        # wait until calculation is done
-        time.sleep(3)
 
         # save cost string to variable
         try:
