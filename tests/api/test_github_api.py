@@ -6,8 +6,8 @@ from modules.common.schemas.follower import Follower
 # Required part of project:
 @pytest.mark.api
 def test_user_exists(github_api):
-    user = github_api.get_user("defunkt")
-    assert user["login"] == "defunkt"
+    user = github_api.get_user("ekmett")
+    assert user["login"] == "ekmett"
 
 
 @pytest.mark.api
@@ -59,7 +59,10 @@ def test_committer_email_in_commits_from_web(github_api):
     from GitHub website is 'noreply@github.com'"""
 
     response = github_api.list_commits_filtered_by_branch_and_committer(
-        "iserpion", "prometheus_qa_auto", "testing", "web-flow"
+        "iserpion",
+        "prometheus_qa_auto",
+        "testing",
+        "web-flow"
     )
 
     is_valid_email = False
@@ -87,7 +90,7 @@ def test_validate_followers(github_api):
     """This test validates GitHub API user followers
     response body using Pydantic library and checks response status code"""
 
-    Response(github_api.get_followers("defunkt")).validate(Follower).assert_status_code(
+    Response(github_api.get_followers("ekmett")).validate(Follower).assert_status_code(
         200
     )
 
@@ -98,7 +101,7 @@ def test_follower_site_admin_exists(github_api):
     """This test checks that in GitHub API user followers
     response exists follower with key "site_admin":true"""
 
-    response = github_api.get_followers("defunkt").json()
+    response = github_api.get_followers("ekmett").json()
 
     is_admin = False
     for item in response:
@@ -143,6 +146,6 @@ def test_follower_site_admin_exists(github_api):
 def test_headers_in_followers_response(github_api, key, value):
     """This test checks headers in GitHub API followers response"""
 
-    response_headers = github_api.get_followers("defunkt").headers
+    response_headers = github_api.get_followers("ekmett").headers
 
     assert response_headers[key] == value, f"{key} header is not existed in response"
