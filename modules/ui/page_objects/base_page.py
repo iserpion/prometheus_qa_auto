@@ -43,6 +43,14 @@ class BasePage:
         """Method for waiting until page title is updated"""
 
         return Wait(self.driver, timeout).until(EC.title_is(title))
+    
+    def invisibility_of_element_located(self, locator, timeout=10):
+        """Method for waiting until element is invisible or not found"""
+
+        return Wait(self.driver, timeout).until(
+            EC.invisibility_of_element_located(locator)
+            or EC.NoSuchElementException
+        )
 
     def page_execute_script(self, type, value):
         """Method for executing JS scripts on page"""

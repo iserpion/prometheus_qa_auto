@@ -5,7 +5,6 @@ from selenium.common.exceptions import (
     ElementClickInterceptedException,
 )
 from random import randint
-import time
 
 
 class Locators:
@@ -32,6 +31,7 @@ class Locators:
     CART_REMOVE_BTN = (By.CSS_SELECTOR, "svg.remove")
     CART_EMPTY_MSG = (By.CSS_SELECTOR, "div.cart-popup_empty>p")
     CART_POPUP = (By.CSS_SELECTOR, "div.cart-popup")
+    CART_POPUP_LOADING = (By.CSS_SELECTOR, "div.cart-popup__content.loading")
 
 
 class MainPage(BasePage):
@@ -136,10 +136,9 @@ class MainPage(BasePage):
         except (TimeoutException, ElementClickInterceptedException):
             print("Increase qty button is not visible or clickable")
 
-        # add explicit wait as after increasing need some time to cart prices are updated
-        # strategies from expected_conditions modules are not applicable here 
-        time.sleep(1)
-
+        # wait until cart loading if finished
+        self.invisibility_of_element_located(Locators.CART_POPUP_LOADING)
+        
         # save data after increasing
         try:
             self.increase_data = {
@@ -165,9 +164,8 @@ class MainPage(BasePage):
         except (TimeoutException, ElementClickInterceptedException):
             print("Decrease qty button is not visible or clickable")
 
-        # add explicit wait as after decreasing need some time to cart prices are updated
-        # strategies from expected_conditions modules are not applicable here 
-        time.sleep(1)
+        # wait until cart loading if finished
+        self.invisibility_of_element_located(Locators.CART_POPUP_LOADING)
 
         # save data after decreasing
         try:
