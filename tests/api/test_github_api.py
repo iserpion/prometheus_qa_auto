@@ -50,7 +50,7 @@ def test_repo_branches_are_listed(github_api, branch_name):
             is_listed = True
             break
 
-    assert is_listed == True, f"{branch_name} branch is not listed in response"
+    assert is_listed, f"{branch_name} branch is not listed in response"
 
 
 @pytest.mark.api
@@ -72,7 +72,7 @@ def test_committer_email_in_commits_from_web(github_api):
         else:
             is_valid_email = False
 
-    assert is_valid_email == True, "Email is not 'noreply@github.com' in commit"
+    assert is_valid_email, "Email is not 'noreply@github.com' in commit"
 
 
 @pytest.mark.api
@@ -90,9 +90,7 @@ def test_validate_followers(github_api):
     """This test validates GitHub API user followers
     response body using Pydantic library and checks response status code"""
 
-    Response(github_api.get_followers("ekmett")).validate(Follower).assert_status_code(
-        200
-    )
+    Response(github_api.get_followers("ekmett")).validate(Follower).assert_status_code(200)
 
 
 @pytest.mark.skip("Test skipping")

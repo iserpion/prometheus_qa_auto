@@ -35,7 +35,7 @@ class Locators:
 
 
 class MyAccountPage(BasePage):
-    """Class holds elements and methods of carid.com MyAccount page"""
+    """Class holds attributes and methods of carid.com My Account page"""
 
     def __init__(self) -> None:
         super().__init__()
@@ -225,8 +225,8 @@ class MyAccountPage(BasePage):
         else:
             print("Invalid address_type is given, should be 'shipping' or 'billing'")
 
-        for el in address_data:
-            if el in address_data_info:
+        for field in address_data:
+            if field in address_data_info:
                 self.is_address_equal = True
             else:
                 self.is_address_equal = False

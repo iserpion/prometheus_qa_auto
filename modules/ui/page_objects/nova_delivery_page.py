@@ -38,7 +38,7 @@ class Locators:
 
 
 class DeliveryPage(BasePage):
-    """Class holds elements and methods of novaposhta.ua delivery page"""
+    """Class holds attributes and methods of novaposhta.ua delivery page"""
 
     URL = "https://novaposhta.ua/delivery"
 

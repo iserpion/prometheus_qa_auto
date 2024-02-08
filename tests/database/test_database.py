@@ -66,8 +66,8 @@ def test_detailed_orders(db):
 # Individual part of project:
 @pytest.mark.database
 def test_insert_duplicated_key(db):
-    """Test verifies that it is unable to insert data
-    with duplicated primary key to products table"""
+    """Test verifies that it's not possible to insert data
+      with a duplicated primary key to products table"""
 
     db.pure_insert_product(4, "cookie", "sweet", 30)
     product_count = db.select_count_product_by_id(4)
@@ -166,4 +166,5 @@ def test_best_selling_product(insert_delete_orders):
     """Test checks the best selling product"""
 
     bestseller = insert_delete_orders.select_bestseller()
+    # check that bestseller is valid
     assert bestseller[0][0] == "beer"

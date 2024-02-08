@@ -35,7 +35,7 @@ class BasePage:
         )
 
     def element_is_present(self, locator, timeout=10):
-        """Method for waiting until element is visible. Returns element object"""
+        """Method for waiting until element is located. Returns element object"""
 
         return Wait(self.driver, timeout).until(EC.presence_of_element_located(locator))
     

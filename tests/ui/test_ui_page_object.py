@@ -85,6 +85,17 @@ def test_check_allo_change_product_qty_in_cart(allo_page):
     # Step 2: check that qty of products is decreased(product price x2)
     assert decrease_result
 
+@pytest.mark.ui
+def test_check_allo_proceed_to_checkout(allo_page):
+    """Test checks transition from main page cart popup to checkout page"""
+
+    allo_page.add_product_to_cart()
+    allo_page.proceed_to_checkout()
+    checkout_url = "https://allo.ua/ua/checkout/onepage/"
+    
+    # Check that transition from cart popup to checkout page is successful
+    assert allo_page.current_url == checkout_url
+
 
 @pytest.mark.ui
 def test_check_novaposhta_delivery_cost(nova_page):

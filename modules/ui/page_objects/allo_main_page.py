@@ -30,12 +30,12 @@ class Locators:
     CART_QTY_MINUS = (By.CSS_SELECTOR, "svg.vi__minus")
     CART_REMOVE_BTN = (By.CSS_SELECTOR, "svg.remove")
     CART_EMPTY_MSG = (By.CSS_SELECTOR, "div.cart-popup_empty>p")
-    CART_POPUP = (By.CSS_SELECTOR, "div.cart-popup")
     CART_POPUP_LOADING = (By.CSS_SELECTOR, "div.cart-popup__content.loading")
+    CHECKOUT_BTN = (By.CSS_SELECTOR, 'button.order-now')
 
 
 class MainPage(BasePage):
-    """Class holds elements and methods of allo.ua main page"""
+    """Class holds attributes and methods of allo.ua main page"""
 
     URL = "https://allo.ua/"
 
@@ -46,12 +46,15 @@ class MainPage(BasePage):
         self.empty_cart_msg = ""
         self.increase_data = {}
         self.decrease_data = {}
+        self.current_url = ""
 
     def go_to(self):
+        """Method to open allo.ua main page"""
+
         self.driver.get(MainPage.URL)
 
     def add_product_to_cart(self):
-        """Method for adding top product to cart from allo.ua main page"""
+        """Method for adding random top product to cart from allo.ua main page"""
 
         # maximize browser window
         self.driver.maximize_window()
@@ -59,11 +62,11 @@ class MainPage(BasePage):
         # scroll to top products section
         self.page_execute_script("scroll", 800)
 
-        # close pre-order popup
+        # close promo popup
         try:
             self.element_is_visible(Locators.PRE_ORDER_CLOSE_BTN).click()
         except TimeoutException:
-            print("Pre-order popup element is not visible")
+            print("Promo popup element is not visible")
 
         # save product data on main page
         try:
@@ -82,7 +85,7 @@ class MainPage(BasePage):
         try:
             self.element_is_visible(Locators.TOP_PRODUCT_BUY_BTN).click()
         except TimeoutException:
-            print("Unable to locate product button")
+            print("Unable to locate product buy button")
 
         # save data from cart popup
         try:
@@ -136,7 +139,7 @@ class MainPage(BasePage):
         except (TimeoutException, ElementClickInterceptedException):
             print("Increase qty button is not visible or clickable")
 
-        # wait until cart loading if finished
+        # wait until cart updating if finished
         self.invisibility_of_element_located(Locators.CART_POPUP_LOADING)
         
         # save data after increasing
@@ -164,7 +167,7 @@ class MainPage(BasePage):
         except (TimeoutException, ElementClickInterceptedException):
             print("Decrease qty button is not visible or clickable")
 
-        # wait until cart loading if finished
+        # wait until cart updating if finished
         self.invisibility_of_element_located(Locators.CART_POPUP_LOADING)
 
         # save data after decreasing
@@ -183,10 +186,10 @@ class MainPage(BasePage):
         except TimeoutException:
             print("Cart prices are not visible")
 
-    def validate_increase_decrease(self, operation):
+    def validate_increase_decrease(self, action):
         """Method for validating that product quantity is increased/decreased"""
 
-        if operation == "increase":
+        if action == "increase":
             # retrieving and store price data after increasing
             product_price_in = self.increase_data["product_price"]
             cart_price_in = self.increase_data["cart_price"]
@@ -197,7 +200,7 @@ class MainPage(BasePage):
                 and total_price_in == cart_price_in
             )  # after increasing qty = 3
 
-        elif operation == "decrease":
+        elif action == "decrease":
             # retrieving and store price data after decreasing
             product_price_de = self.decrease_data["product_price"]
             cart_price_de = self.decrease_data["cart_price"]
@@ -209,4 +212,19 @@ class MainPage(BasePage):
             )  # after decreasing qty = 2
 
         else:
-            print("Invalid operation is given, use 'increase' or 'decrease'")
+            print("Invalid action is given, use 'increase' or 'decrease'")
+    
+    def proceed_to_checkout(self):
+        """Method for transition from cart popup to checkout page"""
+
+        try:
+            self.element_is_visible(Locators.CHECKOUT_BTN).click()
+        except(TimeoutException, ElementClickInterceptedException):
+            print("Proceed to checkout button is not visible or clickable")
+        
+        # wait until page transition is performed and get current url
+        self.title_is_updated("Оформлення замовлення – інтернет-магазин ALLO.ua!")
+        self.current_url = self.driver.current_url
+
+        return self.current_url
+
