@@ -40,7 +40,7 @@ class GitHub:
                    }
         response = requests.post(
             f'https://api.github.com/repos/{username}/{repo_name}/issues',
-            data=payload
+            json=payload
             )
         status_code = response.status_code
 
