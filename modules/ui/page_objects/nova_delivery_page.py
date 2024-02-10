@@ -35,6 +35,7 @@ class Locators:
     MONEY_AMOUNT = (By.ID, "DeliveryForm_backDelivery_amount")
     CALCULATE_DELIVERY_BTN = (By.NAME, "yt0")
     CALCULATED_COST_TEXT = (By.XPATH, '//td[@colspan="2"]')
+    CLOSE_POPUP_BTN = (By.XPATH, '(//i[@class="click close btn_x"])[2]')
 
 
 class DeliveryPage(BasePage):
@@ -51,6 +52,13 @@ class DeliveryPage(BasePage):
 
     def fill_fields(self):
         """Method for filling delivery page fields"""
+
+        # prepare page - close popup
+        try:
+            self.element_is_visible(Locators.CLOSE_POPUP_BTN).click()
+        except (TimeoutException, ElementClickInterceptedException):
+            print("Close popup button is not visible or clickable")
+
 
         # select origin city
         try:
