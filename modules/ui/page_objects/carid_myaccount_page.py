@@ -32,6 +32,14 @@ class Locators:
     B_STATE_DROPDOWN = (By.ID, "b_state")
     B_ZIPCODE = (By.ID, "b_zipcode")
     B_ADDRESS_INFO = (By.XPATH, '(//div[@class="ov-hidden"])[3]')
+    SUBSCRIBE_BTN = (By.CSS_SELECTOR, 'button.btn.js-subscribe-link')
+    ADD_VEHICLE_BTN = (By.CSS_SELECTOR, 'button.simple-btn.-wide.js-mygarage-open-create-popup.mb15')
+    YEAR = (By.XPATH, '//div[@data-placeholder="Year"]')
+    MAKE = (By.XPATH, '//div[@data-placeholder="Make"]')
+    MODEL = (By.XPATH, '//div[@data-placeholder="Model"]')
+    GO_BTN = (By.XPATH, '//div[text()="GO"]')
+    MMY_OPEN = (By.XPATH, '//div[@class="main-selector -big  -open -with-marker"]')
+    MMY_STORED = (By.CSS_SELECTOR, 'a.mygarage-vehicle-title')
 
 
 class MyAccountPage(BasePage):
@@ -44,6 +52,7 @@ class MyAccountPage(BasePage):
         self.bill_address_data = []
         self.bill_address_info = None
         self.is_address_equal = False
+        self.vehicle_mmy = None
 
     def add_shipping_address(self):
         """Method adding shipping address info on My Account page"""
@@ -232,3 +241,39 @@ class MyAccountPage(BasePage):
                 self.is_address_equal = False
 
         return self.is_address_equal
+
+    def add_vehicle(self):
+        """Method for adding vehicle on My Account page"""
+
+        # press add vehicle button
+        try:
+            self.actions.scroll_to_element(Locators.SUBSCRIBE_BTN)
+            self.element_is_visible(Locators.ADD_VEHICLE_BTN).click()
+        except TimeoutException:
+            print("Add vehicle button is not visible")
+
+        # select make model year
+        try:
+            year = self.element_is_visible(Locators.YEAR)
+            year.click()
+            year.send_keys('2006')
+            make = self.element_is_visible(Locators.MAKE)
+            make.click()
+            self.element_is_visible(Locators.MMY_OPEN)
+            make.send_keys('toyota')
+            model = self.element_is_visible(Locators.MODEL)
+            model.click()
+            self.element_is_visible(Locators.MMY_OPEN)
+            model.send_keys('matrix')
+            self.invisibility_of_element_located(Locators.MMY_OPEN, 15)
+            self.element_is_visible(Locators.GO_BTN).click()
+        except TimeoutException:
+            print("Vehicle MMY selectors are not visible")
+
+        # retrieve stored vehicle make model year
+        try:
+            self.vehicle_mmy = self.element_is_visible(Locators.MMY_STORED).text
+        except TimeoutException:
+            print("Added vehicle is not visible in Garage")
+
+        return self.vehicle_mmy
