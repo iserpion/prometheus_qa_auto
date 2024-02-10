@@ -138,6 +138,7 @@ def test_check_carid_add_bill_address(carid_page):
     # check that billing address info is added to My Account page
     assert carid_page.validate_address_info("billing")
 
+
 @pytest.mark.ui
 @pytest.mark.parametrize("carid_page", ["my_account"], indirect=True)
 def test_check_carid_add_vehicle(carid_page):
@@ -146,3 +147,4 @@ def test_check_carid_add_vehicle(carid_page):
 
     # check that vehicle is added to Garage section of My Account page
     assert carid_page.vehicle_mmy == expected_mmy
+    
