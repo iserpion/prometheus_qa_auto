@@ -1,7 +1,10 @@
 from modules.ui.page_objects.base_page import BasePage
 from modules.ui.page_objects.carid_login_page import LoginPage
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import (
+    TimeoutException, 
+    ElementClickInterceptedException
+)
 from modules.common.generators.address_generator import (
     generated_shipping_address,
     generated_billing_address,
@@ -265,10 +268,16 @@ class MyAccountPage(BasePage):
             model.click()
             self.element_is_visible(Locators.MMY_OPEN)
             model.send_keys('matrix')
-            self.invisibility_of_element_located(Locators.MMY_OPEN, 15)
-            self.element_is_visible(Locators.GO_BTN).click()
         except TimeoutException:
             print("Vehicle MMY selectors are not visible")
+
+        # save selected vehicle make model year
+        try:
+            go_btn = self.element_is_clickable(Locators.GO_BTN)
+            go_btn.click()
+            self.page_execute_script('click', go_btn)
+        except (TimeoutException, ElementClickInterceptedException):
+            print("GO button is not visible or clickable")
 
         # retrieve stored vehicle make model year
         try:
