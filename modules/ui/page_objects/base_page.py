@@ -33,6 +33,13 @@ class BasePage:
         return Wait(self.driver, timeout).until(
             EC.visibility_of_element_located(locator)
         )
+    
+    def element_is_clickable(self, locator, timeout=20):
+        """Method for waiting until element can be clickable. Returns element object"""
+
+        return Wait(self.driver, timeout).until(
+            EC.element_to_be_clickable(locator)
+        )
 
     def element_is_present(self, locator, timeout=10):
         """Method for waiting until element is located. Returns element object"""
