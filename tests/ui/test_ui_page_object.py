@@ -4,7 +4,6 @@ from modules.ui.page_objects.sign_in_page import SignInPage
 
 # Required part of project:
 
-
 @pytest.mark.ui
 def test_check_incorrect_username_page_object():
     # Create page object
@@ -25,13 +24,11 @@ def test_check_incorrect_username_page_object():
 
 # Individual part of project:
 
-
 @pytest.mark.ui
 def test_check_allo_product_is_added_to_cart(allo_page):
     """Test checks adding top product to cart from allo.ua main page"""
 
     allo_page.add_product_to_cart()
-
     expected_cart_popup_title = "Кошик"
 
     # Step 1: check that cart popup is opened
@@ -59,7 +56,6 @@ def test_check_allo_product_is_removed_from_cart(allo_page):
 
     allo_page.add_product_to_cart()
     allo_page.remove_product_from_cart()
-
     expected_empty_cart_text = "Ваш кошик порожній."
 
     # check that product is removed
@@ -68,12 +64,10 @@ def test_check_allo_product_is_removed_from_cart(allo_page):
 
 @pytest.mark.ui
 def test_check_allo_change_product_qty_in_cart(allo_page):
-    """Test checks changing product quantity in cart popup"""
+    """Test checks changing product quantity in allo.ua cart popup"""
 
     allo_page.add_product_to_cart()
     allo_page.increase_product_qty_in_cart()
-    # print(allo_page.increase_data)
-
     increase_result = allo_page.validate_increase_decrease("increase")
 
     # Step 1: check that qty of products is increased(product price x3)
@@ -87,7 +81,8 @@ def test_check_allo_change_product_qty_in_cart(allo_page):
 
 @pytest.mark.ui
 def test_check_allo_proceed_to_checkout(allo_page):
-    """Test checks transition from main page cart popup to checkout page"""
+    """Test checks transition from 
+    allo.ua main page cart popup to checkout page"""
 
     allo_page.add_product_to_cart()
     allo_page.proceed_to_checkout()
@@ -124,6 +119,9 @@ def test_check_carid_login(carid_page):
 @pytest.mark.ui
 @pytest.mark.parametrize("carid_page", ["my_account"], indirect=True)
 def test_check_carid_add_ship_address(carid_page):
+    """Test checks that shipping address
+      can be added to carid.com My Account page"""
+    
     carid_page.add_shipping_address()
 
     # check that shipping address info is added to My Account page
@@ -133,6 +131,9 @@ def test_check_carid_add_ship_address(carid_page):
 @pytest.mark.ui
 @pytest.mark.parametrize("carid_page", ["my_account"], indirect=True)
 def test_check_carid_add_bill_address(carid_page):
+    """Test checks that billing address
+      can be added to carid.com My Account page"""
+        
     carid_page.add_billing_address()
 
     # check that billing address info is added to My Account page
@@ -142,6 +143,9 @@ def test_check_carid_add_bill_address(carid_page):
 @pytest.mark.ui
 @pytest.mark.parametrize("carid_page", ["my_account"], indirect=True)
 def test_check_carid_add_vehicle(carid_page):
+    """Test checks that vehicle make model year
+      can be added to carid.com My Account page"""
+
     carid_page.add_vehicle()
     expected_mmy = "2006 Toyota Matrix"
 

@@ -2,6 +2,7 @@ import pytest
 
 
 # Required part of project:
+
 @pytest.mark.database
 def test_database_connection(db):
     db.test_connection()
@@ -64,6 +65,7 @@ def test_detailed_orders(db):
 
 
 # Individual part of project:
+    
 @pytest.mark.database
 def test_insert_duplicated_key(db):
     """Test verifies that it's not possible to insert data
@@ -71,6 +73,7 @@ def test_insert_duplicated_key(db):
 
     db.pure_insert_product(4, "cookie", "sweet", 30)
     product_count = db.select_count_product_by_id(4)
+
     # check that product is not duplicated
     assert product_count[0][0] == 1
 
@@ -82,11 +85,13 @@ def test_create_table_and_manipulate_with_it(db):
 
     db.create_table_order_details()
     table_names = db.select_name_from_sqlite_schema()
+
     # check that table is created
     assert table_names[3][0] == "order_details"
 
     db.insert_order_details(1, 1, 5)
     order_detail = db.select_order_details()
+
     # check structure of data
     assert order_detail[0][0] == 1
     assert order_detail[0][1] == 1
@@ -94,6 +99,7 @@ def test_create_table_and_manipulate_with_it(db):
 
     db.drop_order_details_table()
     table_names = db.select_name_from_sqlite_schema()
+
     # check that table is deleted
     assert len(table_names) == 3
 
@@ -112,6 +118,7 @@ def test_insert_products_multiple_times(db, id, name, description, quantity):
 
     db.insert_product(id, name, description, quantity)
     qnt = db.select_product_qnt_by_id(id)
+
     # check that data inserted
     assert qnt[0][0] == quantity
 
@@ -121,6 +128,7 @@ def test_min_product_qty(db):
     """Test checks minimum quantity of products"""
 
     minimum_qty = db.select_min_max_avg_product_qty("min")
+
     # check that minimum quantity is valid
     assert minimum_qty[0][0] == 9
 
@@ -130,6 +138,7 @@ def test_max_product_qty(db):
     """Test checks maximum quantity of products"""
 
     maximum_qty = db.select_min_max_avg_product_qty("max")
+
     # check that maximum quantity is valid
     assert maximum_qty[0][0] == 30
 
@@ -139,6 +148,7 @@ def test_avg_product_qty(db):
     """Test checks average quantity of products"""
 
     average_qty = db.select_min_max_avg_product_qty("avg")
+
     # check that average quantity is valid
     assert average_qty[0][0] == 17
 
@@ -148,6 +158,7 @@ def test_max_product_description(db):
     """Test checks product description with maximum length"""
 
     max_desc = db.select_product_with_max_description()
+
     # check that product description with maximum length is valid
     assert max_desc[0][0] == "натуральне незбиране"
 
@@ -157,6 +168,7 @@ def test_max_city_count_in_customers(db):
     """Test checks which city most appears in customers table"""
 
     max_city = db.select_customers_city_max_count()
+
     # check the city is valid
     assert max_city[0][0] == "Odesa"
 
@@ -166,5 +178,6 @@ def test_best_selling_product(insert_delete_orders):
     """Test checks the best selling product"""
 
     bestseller = insert_delete_orders.select_bestseller()
+
     # check that bestseller is valid
     assert bestseller[0][0] == "beer"

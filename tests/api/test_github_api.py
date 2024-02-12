@@ -4,6 +4,7 @@ from modules.common.schemas.follower import Follower
 
 
 # Required part of project:
+
 @pytest.mark.api
 def test_user_exists(github_api):
     user = github_api.get_user("ekmett")
@@ -36,6 +37,7 @@ def test_repo_with_single_char_be_found(github_api):
 
 
 # Individual part of project:
+    
 @pytest.mark.api
 @pytest.mark.parametrize("branch_name", ["main", "testing", "protected_test_branch"])
 def test_repo_branches_are_listed(github_api, branch_name):
