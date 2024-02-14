@@ -52,25 +52,25 @@ pytest -s -v -m ui # Run ui test suite
 ```
 ### Organization:
 
-- config:
+- **config**:
   - Houses configuration files 
 
-- modules:
+- **modules**:
   - Contains reusable components for test execution:
-    - api:
-      - baseclasses: Provides base classes for API test clients, encapsulating common behavior.
-      - clients: Holds specific API client classes interacting with different API endpoints.
-    - common:
-      - data: Stores shared test data across various test types.
-      - generators: Houses generic data generators for dynamic test setup.
-      - schemas: Defines validation structures for API responses.
-    - ui:
-      - page_objects: Contains reusable page object classes representing UI elements and functionalities.
-- tests:
+    - **api**:
+      - **baseclasses**: Provides base classes for API test clients, encapsulating common behavior.
+      - **clients**: Holds specific API client classes interacting with different API endpoints.
+    - **common**:
+      - **data**: Stores shared test data across various test types.
+      - **generators**: Houses generic data generators for dynamic test setup.
+      - **schemas**: Defines validation structures for API responses.
+    - **ui**:
+      - **page_objects**: Contains reusable page object classes representing UI elements and functionalities.
+- **tests**:
   - Organizes test cases based on the functionalities they cover:
-    - api: Holds API tests.
-    - database: Contains tests interacting directly with the database.
-    - ui: Houses UI tests.
+    - **api**: Holds API tests.
+    - **database**: Contains tests interacting directly with the database.
+    - **ui**: Houses UI tests.
 
 ### Key Points:
 
