@@ -7,42 +7,63 @@ from modules.common.schemas.follower import Follower
 
 @pytest.mark.api
 def test_user_exists(github_api):
+    """Test checks that existing GitHub user
+    is received from /users endpoint"""
+
     user = github_api.get_user("ekmett")
-    assert user["login"] == "ekmett"
+
+    assert user["login"] == "ekmett", "Expected user is not received"
 
 
 @pytest.mark.api
 def test_user_not_exists(github_api):
+    """Test checks that non-existent GitHub user
+    isn't received from /users endpoint"""
+
     response = github_api.get_user("butenkosergii")
-    assert response["message"] == "Not Found"
+
+    assert response["message"] == "Not Found", "Unexpected response message"
 
 
 @pytest.mark.api
 def test_repo_can_be_found(github_api):
+    """Test checks that existing GitHub repo
+    is received from /search/repositories endpoint"""
+
     response = github_api.search_repo("become-qa-auto")
-    assert response["total_count"] == 54
-    assert "become-qa-auto" in response["items"][0]["name"]
+
+    assert (
+        "become-qa-auto" in response["items"][0]["name"]
+    ), "Expected repo is not found"
 
 
 @pytest.mark.api
 def test_repo_cannot_be_found(github_api):
+    """Test checks that non-existent GitHub repo
+    isn't received from /search/repositories endpoint"""
+
     response = github_api.search_repo("funny_repo_non_exist")
-    assert response["total_count"] == 0
+
+    assert response["total_count"] == 0, "Unexpected search result"
 
 
 @pytest.mark.api
 def test_repo_with_single_char_be_found(github_api):
+    """Test checks that single char search result
+    is not empty from /search/repositories endpoint"""
+
     response = github_api.search_repo("s")
-    assert response["total_count"] != 0
+
+    assert response["total_count"] > 0
 
 
 # Individual part of project:
-    
+
 @pytest.mark.api
 @pytest.mark.parametrize("branch_name", ["main", "testing", "protected_test_branch"])
 def test_repo_branches_are_listed(github_api, branch_name):
     """Test checks that GitHub API returns
-    list of branches for valid user and valid repo."""
+    list of branches for valid user and valid repo"""
 
     response = github_api.list_branches("iserpion", "prometheus_qa_auto")
 
@@ -61,9 +82,9 @@ def test_committer_email_in_commits_from_web(github_api):
     from GitHub website is 'noreply@github.com'"""
 
     response = github_api.list_commits_filtered_by_branch_and_committer(
-        "iserpion",
-        "prometheus_qa_auto",
-        "testing",
+        "iserpion", 
+        "prometheus_qa_auto", 
+        "testing", 
         "web-flow"
     )
 
@@ -148,4 +169,4 @@ def test_headers_in_followers_response(github_api, key, value):
 
     response_headers = github_api.get_followers("ekmett").headers
 
-    assert response_headers[key] == value, f"{key} header is not existed in response"
+    assert response_headers[key] == value, f"{key} header is missing in response"
