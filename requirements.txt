@@ -1,0 +1,5 @@
+pytest==7.4.3
+requests==2.31.0
+pydantic==2.5.3
+selenium==4.16.0
+Faker==22.5.1
