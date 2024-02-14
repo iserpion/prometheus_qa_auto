@@ -1,6 +1,7 @@
 import pytest
 from modules.api.clients.github import GitHub
 from modules.common.database import Database
+from modules.ui.page_objects.sign_in_page import SignInPage
 from modules.ui.page_objects.allo_main_page import MainPage
 from modules.ui.page_objects.nova_delivery_page import DeliveryPage
 from modules.ui.page_objects.carid_login_page import LoginPage
@@ -50,6 +51,14 @@ def insert_delete_orders():
     
     db.delete_from_orders()
     db.connection.close()
+
+@pytest.fixture
+def github_page():
+    page = SignInPage()
+
+    yield page
+
+    page.close()
 
 @pytest.fixture
 def allo_page():

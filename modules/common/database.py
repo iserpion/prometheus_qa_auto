@@ -12,7 +12,10 @@ class Database:
         sqlite_select_query = "SELECT sqlite_version();"
         self.cursor.execute(sqlite_select_query)
         record = self.cursor.fetchall()
-        print(f"Connected successfully. SQLite Database Version is: {record}")
+        self.connection_output = (
+            f"Connected successfully. SQLite Database Version is: {record}"
+        )
+        return self.connection_output
 
     def get_all_users(self):
         query = "SELECT name, address, city FROM customers"
@@ -37,7 +40,7 @@ class Database:
         record = self.cursor.fetchall()
         return record
 
-    def insert_product(self, product_id, name, description, qnt):
+    def insert_or_replace_product(self, product_id, name, description, qnt):
         query = f"INSERT OR REPLACE INTO products (id, name, description, quantity) \
             VALUES ({product_id}, '{name}', '{description}', {qnt})"
         self.cursor.execute(query)
