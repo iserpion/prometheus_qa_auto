@@ -17,16 +17,29 @@ This project automates the following tests:
 ### Installation
 
 ```
+git clone https://github.com/iserpion/prometheus_qa_auto.git
+# clone repo
+
 pip install -r requirements.txt
 # Download and install needed libraries
 ```
 
-### Running Tests
+### Running Tests locally
 ```
 pytest -s -v  # Run all tests
-pytest -s -v -m api  # Run api test suite
+pytest -s -v -m api  # Run GitHub API test suite
 pytest -s -v -m database # Run database test suite
-pytest -s -v -m ui # Run ui test suite
+pytest -s -v -m ui # Run all UI tests
+pytest -s -v -m github_ui # Run github.com UI test suite
+pytest -s -v -m allo_ui # Run allo.ua UI test suite
+pytest -s -v -m nova_ui # Run novaposhta.ua UI test suite
+pytest -s -v -m carid_ui # Run carid.com UI test suite
+```
+
+### Running tests in Docker
+```
+docker build -t automation-tests .
+docker run automation-tests
 ```
 
 ## Test Framework Structure
@@ -43,6 +56,7 @@ pytest -s -v -m ui # Run ui test suite
 |   |   |-- generators
 |   |   `-- schemas
 |   `-- ui
+|       |-- page_locators
 |       `-- page_objects
 `-- tests
     |-- api
@@ -65,6 +79,7 @@ pytest -s -v -m ui # Run ui test suite
       - **generators**: Houses generic data generators for dynamic test setup.
       - **schemas**: Defines validation structures for API responses.
     - **ui**:
+      - **page_locators**: Contains page locators classes
       - **page_objects**: Contains reusable page object classes representing UI elements and functionalities.
 - **tests**:
   - Organizes test cases based on the functionalities they cover:
@@ -87,7 +102,7 @@ pytest -s -v -m ui # Run ui test suite
 - Faker: https://faker.readthedocs.io/en/master/
 
 ## Thanks
-Many thanks to [Prometheus](https://prometheus.org.ua/) and [GlobalLogic](https://www.globallogic.com/ua/) for the amazing [test automation course](https://prometheus.org.ua/prometheus-plus/automatic-software-testing/)
+Many thanks to [Prometheus](https://prometheus.org.ua/) and [GlobalLogic](https://www.globallogic.com/ua/) for the very helpful [test automation course](https://prometheus.org.ua/prometheus-plus/automatic-software-testing/)
 and especially to mentor Sergii Butenko who has a big talent for describing complex things in an easy manner.
 
 

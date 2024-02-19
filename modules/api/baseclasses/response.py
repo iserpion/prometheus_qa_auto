@@ -17,8 +17,8 @@ class Response:
 
     def __str__(self):
         return \
-        f'\nStatus code: {self.response_status} \n' \
-        f'Requested url: {self.response_full.url} \n' \
-        f'Response body: {self.response_json} \n' \
-        f'Response headers: {self.response_full.headers}'
+            f'\nStatus code: {self.response_status} \n' \
+            f'Requested url: {self.response_full.url} \n' \
+            f'Response body: {self.response_json} \n' \
+            f'Response headers: {self.response_full.headers}'
     

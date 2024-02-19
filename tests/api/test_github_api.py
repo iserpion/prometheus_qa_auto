@@ -7,8 +7,9 @@ from modules.common.schemas.follower import Follower
 
 @pytest.mark.api
 def test_user_exists(github_api):
-    """Test checks that existing GitHub user
-    is received from /users endpoint"""
+    """
+    Test checks that existing GitHub user is received from /users endpoint
+    """
 
     user = github_api.get_user("ekmett")
 
@@ -17,8 +18,9 @@ def test_user_exists(github_api):
 
 @pytest.mark.api
 def test_user_not_exists(github_api):
-    """Test checks that non-existent GitHub user
-    isn't received from /users endpoint"""
+    """
+    Test checks non-existent GitHub user isn't received from /users endpoint
+    """
 
     response = github_api.get_user("butenkosergii")
 
@@ -27,8 +29,10 @@ def test_user_not_exists(github_api):
 
 @pytest.mark.api
 def test_repo_can_be_found(github_api):
-    """Test checks that existing GitHub repo
-    is received from /search/repositories endpoint"""
+    """
+    Test checks that existing GitHub repo
+    is received from /search/repositories endpoint
+    """
 
     response = github_api.search_repo("become-qa-auto")
 
@@ -39,8 +43,10 @@ def test_repo_can_be_found(github_api):
 
 @pytest.mark.api
 def test_repo_cannot_be_found(github_api):
-    """Test checks that non-existent GitHub repo
-    isn't received from /search/repositories endpoint"""
+    """
+    Test checks that non-existent GitHub repo
+    isn't received from /search/repositories endpoint
+    """
 
     response = github_api.search_repo("funny_repo_non_exist")
 
@@ -49,8 +55,10 @@ def test_repo_cannot_be_found(github_api):
 
 @pytest.mark.api
 def test_repo_with_single_char_be_found(github_api):
-    """Test checks that single char search result
-    is not empty from /search/repositories endpoint"""
+    """
+    Test checks that single char search result
+    is not empty from /search/repositories endpoint
+    """
 
     response = github_api.search_repo("s")
 
@@ -62,8 +70,10 @@ def test_repo_with_single_char_be_found(github_api):
 @pytest.mark.api
 @pytest.mark.parametrize("branch_name", ["main", "testing", "protected_test_branch"])
 def test_repo_branches_are_listed(github_api, branch_name):
-    """Test checks that GitHub API returns
-    list of branches for valid user and valid repo"""
+    """
+    Test checks that GitHub API returns
+    list of branches for valid user and valid repo
+    """
 
     response = github_api.list_branches("iserpion", "prometheus_qa_auto")
 
@@ -78,8 +88,10 @@ def test_repo_branches_are_listed(github_api, branch_name):
 
 @pytest.mark.api
 def test_committer_email_in_commits_from_web(github_api):
-    """Test checks that committer email in all commits
-    from GitHub website is 'noreply@github.com'"""
+    """
+    Test checks that committer email in all commits
+    from GitHub website is 'noreply@github.com'
+    """
 
     response = github_api.list_commits_filtered_by_branch_and_committer(
         "iserpion", 
@@ -100,27 +112,32 @@ def test_committer_email_in_commits_from_web(github_api):
 
 @pytest.mark.api
 def test_create_issue_without_authorization(github_api):
-    """Test status code on attempt to create an issue
-    via GitHub API without authorization"""
+    """
+    Test status code on attempt to create an issue
+    via GitHub API without authorization
+    """
 
-    status_code = github_api.attempt_to_create_issue("iserpion", "prometheus_qa_auto")
+    username = "iserpion"
+    repo_name = "prometheus_qa_auto"
+    title = "Test defect from API"
+    body = "Test defect created via GitHub API"
 
-    assert status_code == 404, "Status code is not 404"
+    response = github_api.attempt_to_create_issue(
+        username,
+        repo_name,
+        title,
+        body
+    )
+
+    assert response.status_code == 404, "Status code is not 404"
 
 
-@pytest.mark.api
-def test_validate_followers(github_api):
-    """This test validates GitHub API user followers
-    response body using Pydantic library and checks response status code"""
-
-    Response(github_api.get_followers("ekmett")).validate(Follower).assert_status_code(200)
-
-
-@pytest.mark.skip("Test skipping")
 @pytest.mark.api
 def test_follower_site_admin_exists(github_api):
-    """This test checks that in GitHub API user followers
-    response exists follower with key "site_admin":true"""
+    """
+    This test checks that in GitHub API user followers
+    response exists "site admin" follower
+    """
 
     response = github_api.get_followers("ekmett").json()
 
@@ -170,3 +187,14 @@ def test_headers_in_followers_response(github_api, key, value):
     response_headers = github_api.get_followers("ekmett").headers
 
     assert response_headers[key] == value, f"{key} header is missing in response"
+
+
+@pytest.mark.skip("Test skipping")
+@pytest.mark.api
+def test_validate_followers(github_api):
+    """
+    This test validates GitHub API user followers
+    response body using Pydantic library and checks response status code
+    """
+
+    Response(github_api.get_followers("ekmett")).validate(Follower).assert_status_code(200)

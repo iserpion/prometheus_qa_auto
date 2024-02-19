@@ -8,12 +8,10 @@ def test_database_connection(db):
     """Test checks database connection"""
 
     db.test_connection()
-    expected_output = (
-        "Connected successfully. SQLite Database Version is: [('3.43.1',)]"
-    )
+    expected_output = "Connected successfully. SQLite Database Version is:"
 
     # check connection output
-    assert db.connection_output == expected_output
+    assert expected_output in db.connection_output
 
 
 @pytest.mark.database
@@ -90,13 +88,34 @@ def test_detailed_orders(db):
 
 
 # Individual part of project:
+
+@pytest.mark.database
+@pytest.mark.parametrize(
+    "id, name, description, quantity",
+    [
+        (5, "meat", "chicken", 9), 
+        (6, "beer", "lager", 24), 
+        (7, "juice", "banana", 14)
+    ],
+)
+def test_insert_products_multiple_times(db, id, name, description, quantity):
+    """Test that inserts data into products table multiple times"""
+
+    db.insert_or_replace_product(id, name, description, quantity)
+    qnt = db.select_product_qnt_by_id(id)
+
+    # check that data inserted
+    assert qnt[0][0] == quantity
+
     
 @pytest.mark.database
 def test_insert_duplicated_key(db):
-    """Test verifies that it's not possible to insert data
-      with a duplicated primary key to products table"""
+    """
+    Test verifies that it's not possible to insert data
+    with a duplicated primary key to products table
+    """
 
-    db.pure_insert_product(4, "cookie", "sweet", 30)
+    db.insert_product(4, "cookie", "sweet", 30)
     product_count = db.select_count_product_by_id(4)
 
     # check that product is not duplicated
@@ -105,8 +124,10 @@ def test_insert_duplicated_key(db):
 
 @pytest.mark.database
 def test_create_table_and_manipulate_with_it(db):
-    """Test verifies that a table can be created,
-    some data can be stored/read to/from it and table can be dropped from DB"""
+    """
+    Test verifies that a table can be created,
+    some data can be stored/read to/from it and table can be dropped from DB
+    """
 
     db.create_table_order_details()
     table_names = db.select_name_from_sqlite_schema()
@@ -130,29 +151,10 @@ def test_create_table_and_manipulate_with_it(db):
 
 
 @pytest.mark.database
-@pytest.mark.parametrize(
-    "id, name, description, quantity",
-    [
-        (5, "meat", "chicken", 9), 
-        (6, "beer", "lager", 24), 
-        (7, "juice", "banana", 14)
-    ],
-)
-def test_insert_products_multiple_times(db, id, name, description, quantity):
-    """Test that inserts data into products table multiple times"""
-
-    db.insert_or_replace_product(id, name, description, quantity)
-    qnt = db.select_product_qnt_by_id(id)
-
-    # check that data inserted
-    assert qnt[0][0] == quantity
-
-
-@pytest.mark.database
 def test_min_product_qty(db):
     """Test checks minimum quantity of products"""
 
-    minimum_qty = db.select_min_max_avg_product_qty("min")
+    minimum_qty = db.select_min_product_qty()
 
     # check that minimum quantity is valid
     assert minimum_qty[0][0] == 9
@@ -162,7 +164,7 @@ def test_min_product_qty(db):
 def test_max_product_qty(db):
     """Test checks maximum quantity of products"""
 
-    maximum_qty = db.select_min_max_avg_product_qty("max")
+    maximum_qty = db.select_max_product_qty()
 
     # check that maximum quantity is valid
     assert maximum_qty[0][0] == 30
@@ -172,7 +174,7 @@ def test_max_product_qty(db):
 def test_avg_product_qty(db):
     """Test checks average quantity of products"""
 
-    average_qty = db.select_min_max_avg_product_qty("avg")
+    average_qty = db.select_avg_product_qty()
 
     # check that average quantity is valid
     assert average_qty[0][0] == 17

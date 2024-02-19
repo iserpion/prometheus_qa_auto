@@ -4,6 +4,7 @@ import pytest
 # Required part of project:
 
 @pytest.mark.ui
+@pytest.mark.github_ui
 def test_check_incorrect_username_page_object(github_page):
     """Test checks login to GitHub with wrong credentials"""
 
@@ -17,14 +18,14 @@ def test_check_incorrect_username_page_object(github_page):
     assert github_page.check_title("Sign in to GitHub · GitHub")
 
 
-
 # Individual part of project:
 
 @pytest.mark.ui
+@pytest.mark.allo_ui
 def test_check_allo_product_is_added_to_cart(allo_page):
     """Test checks adding top product to cart from allo.ua main page"""
 
-    allo_page.add_product_to_cart()
+    allo_page.add_random_top_product_to_cart()
     expected_cart_popup_title = "Кошик"
 
     # Step 1: check that cart popup is opened
@@ -35,22 +36,30 @@ def test_check_allo_product_is_added_to_cart(allo_page):
         allo_page.product_data["product_title"] == allo_page.cart_data["product_title"]
     )
 
+
+@pytest.mark.ui
+@pytest.mark.allo_ui
+def test_check_allo_cart_prices(allo_page):
+    """Test checks cart prices on allo.ua cart popup"""
+
+    allo_page.add_random_top_product_to_cart()
     product_price = allo_page.get_nums_from_str(allo_page.product_data["product_price"])
-    cart_price = allo_page.get_nums_from_str(allo_page.cart_data["product_price"])
+    cart_product_price = allo_page.get_nums_from_str(allo_page.cart_data["product_price"])
     total_price = allo_page.get_nums_from_str(allo_page.cart_data["total_price"])
 
-    # Step 3: check that product price in cart is the same as on main page
-    assert cart_price == product_price
+    # Step 1: check that product price in cart is the same as on main page
+    assert cart_product_price == product_price
 
-    # Step 4: check that cart total price is the same as product price on main page
+    # Step 2: check that cart total price is the same as product price on main page
     assert total_price == product_price
 
 
 @pytest.mark.ui
+@pytest.mark.allo_ui
 def test_check_allo_product_is_removed_from_cart(allo_page):
     """Test checks removing product from cart on allo.ua"""
 
-    allo_page.add_product_to_cart()
+    allo_page.add_random_top_product_to_cart()
     allo_page.remove_product_from_cart()
     expected_empty_cart_text = "Ваш кошик порожній."
 
@@ -59,28 +68,33 @@ def test_check_allo_product_is_removed_from_cart(allo_page):
 
 
 @pytest.mark.ui
+@pytest.mark.allo_ui
 def test_check_allo_change_product_qty_in_cart(allo_page):
     """Test checks changing product quantity in allo.ua cart popup"""
 
-    allo_page.add_product_to_cart()
+    allo_page.add_random_top_product_to_cart()
     allo_page.increase_product_qty_in_cart()
-    increase_result = allo_page.validate_increase_decrease("increase")
+    increase_result = allo_page.validate_increase()
 
     # Step 1: check that qty of products is increased(product price x3)
     assert increase_result
 
     allo_page.decrease_product_qty_in_cart()
-    decrease_result = allo_page.validate_increase_decrease("decrease")
+    decrease_result = allo_page.validate_decrease()
 
     # Step 2: check that qty of products is decreased(product price x2)
     assert decrease_result
 
-@pytest.mark.ui
-def test_check_allo_proceed_to_checkout(allo_page):
-    """Test checks transition from 
-    allo.ua main page cart popup to checkout page"""
 
-    allo_page.add_product_to_cart()
+@pytest.mark.ui
+@pytest.mark.allo_ui
+def test_check_allo_proceed_to_checkout(allo_page):
+    """
+    Test checks transition from 
+    allo.ua main page cart popup to checkout page
+    """
+
+    allo_page.add_random_top_product_to_cart()
     allo_page.proceed_to_checkout()
     checkout_url = "https://allo.ua/ua/checkout/onepage/"
     
@@ -89,10 +103,11 @@ def test_check_allo_proceed_to_checkout(allo_page):
 
 
 @pytest.mark.ui
+@pytest.mark.nova_ui
 def test_check_novaposhta_delivery_cost(nova_page):
     """Test checks NovaPoshta delivery calculation"""
 
-    nova_page.fill_fields()
+    nova_page.fill_form_fields()
     nova_page.calculate_delivery()
     expected_text = "Вартість перевезення 205.00 ... 240.00грн"
 
@@ -101,6 +116,7 @@ def test_check_novaposhta_delivery_cost(nova_page):
 
 
 @pytest.mark.ui
+@pytest.mark.carid_ui
 @pytest.mark.parametrize("carid_page", ["login"], indirect=True)
 def test_check_carid_login(carid_page):
     """Test checks login to carid.com"""
@@ -113,6 +129,7 @@ def test_check_carid_login(carid_page):
 
 
 @pytest.mark.ui
+@pytest.mark.carid_ui
 @pytest.mark.parametrize("carid_page", ["my_account"], indirect=True)
 def test_check_carid_add_ship_address(carid_page):
     """Test checks that shipping address
@@ -125,6 +142,7 @@ def test_check_carid_add_ship_address(carid_page):
 
 
 @pytest.mark.ui
+@pytest.mark.carid_ui
 @pytest.mark.parametrize("carid_page", ["my_account"], indirect=True)
 def test_check_carid_add_bill_address(carid_page):
     """Test checks that billing address
@@ -137,6 +155,7 @@ def test_check_carid_add_bill_address(carid_page):
 
 
 @pytest.mark.ui
+@pytest.mark.carid_ui
 @pytest.mark.parametrize("carid_page", ["my_account"], indirect=True)
 def test_check_carid_add_vehicle(carid_page):
     """Test checks that vehicle make model year

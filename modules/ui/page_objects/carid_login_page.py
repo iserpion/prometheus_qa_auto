@@ -1,6 +1,5 @@
 from modules.ui.page_objects.base_page import BasePage
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
 import time
 from random import randint
 
@@ -24,14 +23,11 @@ class LoginPage(BasePage):
     def login(self):
         """Method to login as a new customer to carid.com"""
 
-        # open page
+        # open carid.com login page
         self.driver.get(LoginPage.URL)
 
         # select new customer option
-        try:
-            self.element_is_visible(LoginPage.NEW_CUSTOMER_BTN).click()
-        except TimeoutException:
-            print("Login form is not visible")
+        self.element_is_visible(LoginPage.NEW_CUSTOMER_BTN).click()
 
         # prepare data for login as a new customer
         now_date = time.strftime("%Y%m%d%H%M%S", time.localtime())
@@ -39,12 +35,9 @@ class LoginPage(BasePage):
         password = randint(111111, 999999)
 
         # fill form and submit
-        try:
-            self.element_is_visible(LoginPage.EMAIL_FIELD).send_keys(email)
-            self.element_is_visible(LoginPage.PASSWORD_FIELD).send_keys(password)
-            self.element_is_visible(LoginPage.SUBMIT_BTN).click()
-        except TimeoutException:
-            print("Login form fields are not visible")
+        self.element_is_visible(LoginPage.EMAIL_FIELD).send_keys(email)
+        self.element_is_visible(LoginPage.PASSWORD_FIELD).send_keys(password)
+        self.element_is_visible(LoginPage.SUBMIT_BTN).click()
 
         # wait until login is performed and get current url
         self.title_is_updated("CARiD.com - My Account")

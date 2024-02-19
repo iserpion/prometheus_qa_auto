@@ -1,6 +1,8 @@
 import requests
 
+
 class GitHub:
+    """Class holds methods for interacting with GitHub API"""
 
     def get_user(self, username):
         response = requests.get(f'https://api.github.com/users/{username}')
@@ -33,18 +35,17 @@ class GitHub:
 
         return body
     
-    def attempt_to_create_issue(self, username, repo_name):
-        payload = {"title":"Test bug from API",
-                   "body":"Test bug from API",
-                   "assignees":[f'{username}']
+    def attempt_to_create_issue(self, username, repo_name, title, body):
+        payload = {"title":title,
+                   "body":body,
+                   "assignees":[username]
                    }
         response = requests.post(
             f'https://api.github.com/repos/{username}/{repo_name}/issues',
             json=payload
             )
-        status_code = response.status_code
-
-        return status_code
+        
+        return response
     
     def get_followers(self, username):
         response = requests.get(f'https://api.github.com/users/{username}/followers')

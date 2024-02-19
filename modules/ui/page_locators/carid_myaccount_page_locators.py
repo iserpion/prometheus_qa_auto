@@ -1,0 +1,35 @@
+from selenium.webdriver.common.by import By
+
+
+class CaridMyAccountPageLocators:
+    """Class holds carid.com MyAccount page locators"""
+
+    ACCOUNT_SETTINGS = (By.XPATH, '//div[contains(text(),"Settings")]')
+    S_ADDRESS_ADD_NEW_BTN = (By.XPATH, '//button[@data-controller="shipping"]')
+    FIRST_NAME = (By.ID, "firstname")
+    LAST_NAME = (By.ID, "lastname")
+    COMPANY = (By.ID, "company")
+    S_ADDRESS = (By.ID, "s_address")
+    ADDRESS_2 = (By.ID, "address_2")
+    S_CITY = (By.ID, "s_city")
+    S_STATE_DROPDOWN = (By.ID, "s_state")
+    STATE = (By.XPATH, '//option[@value="AL"]')
+    S_ZIPCODE = (By.ID, "s_zipcode")
+    PHONE = (By.ID, "phone")
+    SUBMIT_BTN = (By.ID, "submitBtn")
+    MODAL_BTN = (By.XPATH, '//div[@class="modal-simple"]/button')
+    S_ADDRESS_INFO = (By.XPATH, '(//div[@class="ov-hidden"])[1]')
+    B_ADDRESS_ADD_NEW_BTN = (By.XPATH, '//button[@data-controller="billing"]')
+    B_ADDRESS = (By.ID, "b_address")
+    B_CITY = (By.ID, "b_city")
+    B_STATE_DROPDOWN = (By.ID, "b_state")
+    B_ZIPCODE = (By.ID, "b_zipcode")
+    B_ADDRESS_INFO = (By.XPATH, '(//div[@class="ov-hidden"])[3]')
+    SUBSCRIBE_BTN = (By.CSS_SELECTOR, 'button.btn.js-subscribe-link')
+    ADD_VEHICLE_BTN = (By.CSS_SELECTOR, 'button.simple-btn.-wide.js-mygarage-open-create-popup.mb15')
+    YEAR = (By.XPATH, '//div[@data-placeholder="Year"]')
+    MAKE = (By.XPATH, '//div[@data-placeholder="Make"]')
+    MODEL = (By.XPATH, '//div[@data-placeholder="Model"]')
+    GO_BTN = (By.XPATH, '//div[text()="GO"]')
+    MMY_OPEN = (By.XPATH, '//div[@class="main-selector -big  -open -with-marker"]')
+    MMY_STORED = (By.CSS_SELECTOR, 'a.mygarage-vehicle-title')
