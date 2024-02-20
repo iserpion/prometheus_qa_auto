@@ -194,7 +194,17 @@ def test_headers_in_followers_response(github_api, key, value):
 def test_validate_followers(github_api):
     """
     This test validates GitHub API user followers
-    response body using Pydantic library and checks response status code
+    response body using Pydantic library
     """
 
-    Response(github_api.get_followers("ekmett")).validate(Follower).assert_status_code(200)
+    # get response from GitHub API /followers endpoint
+    api_resp = github_api.get_followers("ekmett")
+
+    # create object of Response base class with the above response
+    response = Response(api_resp)
+
+    # validate response body using Follower pydantic schema
+    response.validate(Follower)
+
+    # check response status code using Response base class method
+    response.assert_status_code(200)

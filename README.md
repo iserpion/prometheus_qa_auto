@@ -24,7 +24,7 @@ pip install -r requirements.txt
 # Download and install needed libraries
 ```
 
-### Running Tests locally
+### Running tests locally
 ```
 pytest -s -v  # Run all tests
 pytest -s -v -m api  # Run GitHub API test suite

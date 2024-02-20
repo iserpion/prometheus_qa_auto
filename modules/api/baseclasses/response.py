@@ -10,7 +10,6 @@ class Response:
                 schema.model_validate(item)
         else:
             schema.model_validate(self.response_json)
-        return self
     
     def assert_status_code(self, status_code):
         assert self.response_status == status_code, self
