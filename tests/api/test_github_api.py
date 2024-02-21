@@ -1,6 +1,4 @@
 import pytest
-from modules.api.baseclasses.response import Response
-from modules.common.schemas.follower import Follower
 
 
 # Required part of project:
@@ -187,24 +185,3 @@ def test_headers_in_followers_response(github_api, key, value):
     response_headers = github_api.get_followers("ekmett").headers
 
     assert response_headers[key] == value, f"{key} header is missing in response"
-
-
-@pytest.mark.skip("Test skipping")
-@pytest.mark.api
-def test_validate_followers(github_api):
-    """
-    This test validates GitHub API user followers
-    response body using Pydantic library
-    """
-
-    # get response from GitHub API /followers endpoint
-    api_resp = github_api.get_followers("ekmett")
-
-    # create object of Response base class with the above response
-    response = Response(api_resp)
-
-    # validate response body using Follower pydantic schema
-    response.validate(Follower)
-
-    # check response status code using Response base class method
-    response.assert_status_code(200)

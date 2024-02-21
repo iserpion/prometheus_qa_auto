@@ -1,13 +1,24 @@
 import pytest
 from modules.api.clients.github import GitHub
+from modules.api.clients.petstore import PetStore
+from modules.api.helpers.schema_validator import SchemaValidator
 from modules.common.database import Database
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def github_api():
     api = GitHub()
     yield api
 
+@pytest.fixture(scope='module')
+def petstore_api():
+    api = PetStore()
+    yield api
+
+@pytest.fixture(scope='module')
+def pet_validate():
+    validator = SchemaValidator()
+    yield validator
 
 @pytest.fixture(scope='module')
 def db():
