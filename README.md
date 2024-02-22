@@ -2,6 +2,7 @@
 
 This project automates the following tests:
 - REST API tests using Python, Pytest, Requests, and Pydantic
+- GraphQL API tests using Python, Pytest, Requests, and sgqlc
 - Database query tests using Python, Pytest, and sqlite3
 - Web UI tests using Python, Pytest, Selenium WebDriver, and Faker
 
@@ -13,6 +14,7 @@ This project automates the following tests:
 - Selenium >= 4.6
 - Pydantic >= 2.5
 - Faker >= 22.5
+- sgqlc >= 16.3
 
 ### Installation
 
@@ -34,6 +36,7 @@ pytest -s -v -m github_ui # Run github.com UI test suite
 pytest -s -v -m allo_ui # Run allo.ua UI test suite
 pytest -s -v -m nova_ui # Run novaposhta.ua UI test suite
 pytest -s -v -m carid_ui # Run carid.com UI test suite
+pytest -s -v -m gql_api # Run GraphQL API test suite
 ```
 
 ### Running tests in Docker
