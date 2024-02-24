@@ -1,14 +1,11 @@
 import sqlite3
-from config.config import ConfigDatabase
 
 
-class Database:
+class SqlDatabase:
     """Class holds methods for manipulating with simple local database"""
 
-    config = ConfigDatabase()
-
-    def __init__(self):
-        self.connection = sqlite3.connect(self.config.get_db_path('remote'))
+    def __init__(self, db_path):
+        self.connection = sqlite3.connect(db_path)
         self.cursor = self.connection.cursor()
         self.connection_output = None
 

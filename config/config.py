@@ -1,13 +1,19 @@
+from dotenv import dotenv_values
+
+
 class ConfigDatabase:
 
-    @staticmethod
-    def get_db_path(env):
+    @property
+    def get_db_path(self):
 
-        db_path = ''
-        if env == 'local':
-            db_path = r"C:\Users\iserp\qa_auto\prometheus_qa_auto" + r"\become_qa_auto.db"
-        elif env == 'remote':
-            db_path = r"./become_qa_auto.db"
+        db_path = r"./become_qa_auto.db"
     
         return db_path
     
+    @property
+    def get_mongo_uri(self):
+
+        config = dotenv_values(".env")
+        mongo_uri = config["MONGODB_URI"]
+
+        return mongo_uri

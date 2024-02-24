@@ -4,3 +4,5 @@ pydantic==2.5.3
 selenium==4.16.0
 Faker==22.5.1
 sgqlc==16.3
+python-dotenv==1.0.1
+pymongo==4.6.2

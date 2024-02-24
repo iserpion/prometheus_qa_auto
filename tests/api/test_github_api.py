@@ -3,7 +3,7 @@ import pytest
 
 # Required part of project:
 
-@pytest.mark.api
+@pytest.mark.rest_api
 def test_user_exists(github_api):
     """
     Test checks that existing GitHub user is received from /users endpoint
@@ -14,7 +14,7 @@ def test_user_exists(github_api):
     assert user["login"] == "ekmett", "Expected user is not received"
 
 
-@pytest.mark.api
+@pytest.mark.rest_api
 def test_user_not_exists(github_api):
     """
     Test checks non-existent GitHub user isn't received from /users endpoint
@@ -25,7 +25,7 @@ def test_user_not_exists(github_api):
     assert response["message"] == "Not Found", "Unexpected response message"
 
 
-@pytest.mark.api
+@pytest.mark.rest_api
 def test_repo_can_be_found(github_api):
     """
     Test checks that existing GitHub repo
@@ -39,7 +39,7 @@ def test_repo_can_be_found(github_api):
     ), "Expected repo is not found"
 
 
-@pytest.mark.api
+@pytest.mark.rest_api
 def test_repo_cannot_be_found(github_api):
     """
     Test checks that non-existent GitHub repo
@@ -51,7 +51,7 @@ def test_repo_cannot_be_found(github_api):
     assert response["total_count"] == 0, "Unexpected search result"
 
 
-@pytest.mark.api
+@pytest.mark.rest_api
 def test_repo_with_single_char_be_found(github_api):
     """
     Test checks that single char search result
@@ -65,7 +65,7 @@ def test_repo_with_single_char_be_found(github_api):
 
 # Individual part of project:
 
-@pytest.mark.api
+@pytest.mark.rest_api
 @pytest.mark.parametrize("branch_name", ["main", "testing", "protected_test_branch"])
 def test_repo_branches_are_listed(github_api, branch_name):
     """
@@ -84,7 +84,7 @@ def test_repo_branches_are_listed(github_api, branch_name):
     assert is_listed, f"{branch_name} branch is not listed in response"
 
 
-@pytest.mark.api
+@pytest.mark.rest_api
 def test_committer_email_in_commits_from_web(github_api):
     """
     Test checks that committer email in all commits
@@ -108,7 +108,7 @@ def test_committer_email_in_commits_from_web(github_api):
     assert is_valid_email, "Email is not 'noreply@github.com' in commit"
 
 
-@pytest.mark.api
+@pytest.mark.rest_api
 def test_create_issue_without_authorization(github_api):
     """
     Test status code on attempt to create an issue
@@ -130,7 +130,7 @@ def test_create_issue_without_authorization(github_api):
     assert response.status_code == 404, "Status code is not 404"
 
 
-@pytest.mark.api
+@pytest.mark.rest_api
 def test_follower_site_admin_exists(github_api):
     """
     This test checks that in GitHub API user followers
@@ -148,7 +148,7 @@ def test_follower_site_admin_exists(github_api):
     assert is_admin, "There is no site admin users in followers list"
 
 
-@pytest.mark.api
+@pytest.mark.rest_api
 @pytest.mark.parametrize(
     "key, value",
     [

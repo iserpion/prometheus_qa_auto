@@ -6,7 +6,7 @@ from http import HTTPStatus
 
 # Positive test cases:
 
-@pytest.mark.api
+@pytest.mark.rest_api
 def test_create_new_pet(petstore_api, pet_validate):
     """Test checks creating a new pet"""
 
@@ -20,7 +20,7 @@ def test_create_new_pet(petstore_api, pet_validate):
     assert response.json() == PetData.post_pet_body
 
 
-@pytest.mark.api
+@pytest.mark.rest_api
 def test_find_pet_by_id(petstore_api, pet_validate):
     """Test checks retrieving pet by id"""
 
@@ -34,7 +34,7 @@ def test_find_pet_by_id(petstore_api, pet_validate):
     assert response.json() == PetData.post_pet_body
 
 
-@pytest.mark.api
+@pytest.mark.rest_api
 def test_update_pet(petstore_api, pet_validate):
     """Test checks updating pet"""
 
@@ -48,7 +48,7 @@ def test_update_pet(petstore_api, pet_validate):
     assert response.json() == PetData.put_pet_body
 
 
-@pytest.mark.api
+@pytest.mark.rest_api
 def test_delete_pet(petstore_api):
     """Test checks deleting pet"""
 
@@ -63,7 +63,7 @@ def test_delete_pet(petstore_api):
 
 # Negative test cases:
 
-@pytest.mark.api
+@pytest.mark.rest_api
 def test_create_new_pet_negative(petstore_api):
     """Test checks attempt to create pet w/o id in request"""
 
@@ -78,7 +78,7 @@ def test_create_new_pet_negative(petstore_api):
     assert PetData.POST_ERR_MESSAGE in response_body["message"]
 
 
-@pytest.mark.api
+@pytest.mark.rest_api
 def test_find_pet_negative(petstore_api):
     """Test checks attempt to request pet with invalid id"""
 
@@ -93,7 +93,7 @@ def test_find_pet_negative(petstore_api):
     assert response_body["message"] == PetData.ERR_MESSAGE
 
 
-@pytest.mark.api
+@pytest.mark.rest_api
 def test_update_pet_negative(petstore_api):
     """Test checks attempt to update pet w/o name in request"""
 
@@ -105,7 +105,7 @@ def test_update_pet_negative(petstore_api):
     assert response.text == PetData.PET_NOT_FOUND_TEXT
 
 
-@pytest.mark.api
+@pytest.mark.rest_api
 def test_delete_pet_negative(petstore_api):
     """Test checks attempt to delete pet with invalid id in request"""
 

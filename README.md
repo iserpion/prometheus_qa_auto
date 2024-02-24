@@ -3,7 +3,8 @@
 This project automates the following tests:
 - REST API tests using Python, Pytest, Requests, and Pydantic
 - GraphQL API tests using Python, Pytest, Requests, and sgqlc
-- Database query tests using Python, Pytest, and sqlite3
+- SQL database(SQLite) query tests using Python, Pytest, and sqlite3
+- NoSQL database(MongoDB) query tests using Python, Pytest, and PyMongo
 - Web UI tests using Python, Pytest, Selenium WebDriver, and Faker
 
 ## Getting Started
@@ -15,6 +16,8 @@ This project automates the following tests:
 - Pydantic >= 2.5
 - Faker >= 22.5
 - sgqlc >= 16.3
+- python-dotenv >= 1.0
+- pymongo >= 4.6
 
 ### Installation
 
@@ -29,14 +32,16 @@ pip install -r requirements.txt
 ### Running tests locally
 ```
 pytest -s -v  # Run all tests
-pytest -s -v -m api  # Run API test suite
-pytest -s -v -m database # Run database test suite
+pytest -s -v -m rest_api  # Run REST API test suite
+pytest -s -v -m gql_api # Run GraphQL API test suite
+pytest -s -v -m sql_db # Run SQL database test suite
+pytest -s -v -m nosql_db # Run NoSQL database test suite
 pytest -s -v -m ui # Run all UI tests
 pytest -s -v -m github_ui # Run github.com UI test suite
 pytest -s -v -m allo_ui # Run allo.ua UI test suite
 pytest -s -v -m nova_ui # Run novaposhta.ua UI test suite
 pytest -s -v -m carid_ui # Run carid.com UI test suite
-pytest -s -v -m gql_api # Run GraphQL API test suite
+
 ```
 
 ### Running tests in Docker
@@ -56,6 +61,7 @@ docker run automation-tests
 |   |   `-- helpers
 |   |-- common
 |   |   |-- data
+|   |   |-- databases
 |   |   |-- generators
 |   |   `-- schemas
 |   `-- ui
@@ -79,6 +85,7 @@ docker run automation-tests
         - **helpers**: Provides helper classes for API tests, e.g. schema validation.
     - **common**:
       - **data**: Stores shared test data across various test types.
+      - **databases**: Stores database classes.
       - **generators**: Houses generic data generators for dynamic test setup.
       - **schemas**: Defines validation structures for API responses.
     - **ui**:
@@ -103,6 +110,8 @@ docker run automation-tests
 - Selenium: https://www.selenium.dev/
 - Pydantic: https://docs.pydantic.dev/latest/
 - Faker: https://faker.readthedocs.io/en/master/
+- sglc: https://sgqlc.readthedocs.io/en/latest/
+- PyMongo: https://www.mongodb.com/docs/drivers/pymongo/
 
 ## Thanks
 Many thanks to [Prometheus](https://prometheus.org.ua/) and [GlobalLogic](https://www.globallogic.com/ua/) for the very helpful [test automation course](https://prometheus.org.ua/prometheus-plus/automatic-software-testing/)
