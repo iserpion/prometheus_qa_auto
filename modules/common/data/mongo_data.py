@@ -14,12 +14,30 @@ class MongoData:
     expected_debt = 101050
     total_sum_debts_pipeline = [
         {
-            '$group': {
-                '_id': '$currency', 
-                'currency_sum': {
-                    '$sum': '$money'
-                }
+          "$addFields": {
+            "converted_amount": {
+              "$switch": {
+                "branches": [
+                  { "case": { "$eq": ["$currency", "UAH"] }, "then": "$money" },
+                  { "case": { "$eq": ["$currency", "USD"] }, "then": { "$multiply": ["$money", 38] } },
+                  { "case": { "$eq": ["$currency", "EUR"] }, "then": { "$multiply": ["$money", 41] } }
+                ],
+                "default": 0
+              }
             }
+          }
+        },
+        {
+          "$group": {
+            "_id": "",
+            "total_amount": { "$sum": "$converted_amount" }
+          }
+        },
+        {
+          "$project": {
+            "_id": 0,
+            "total_amount": 1
+          }
         }
     ]
 

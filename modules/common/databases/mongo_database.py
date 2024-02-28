@@ -23,7 +23,7 @@ class MongoDatabase:
             self.connection_output = self.connection.admin.command("ismaster")
             return self.connection_output
         except (ConnectionFailure, OperationFailure) as f:
-            pytest.xfail(f"Connection failed. Reason: {str(f)}")
+            pytest.fail(f"Connection failed. Reason: {str(f)}")
     
     def create_database(self, db_name):
         """Method creates database on MongoDB cluster"""
@@ -103,16 +103,16 @@ class MongoDatabase:
         return self.aggregation_result
     
     @staticmethod
-    def calculate_total_debt_in_uah(aggregation_result, usd_rate, eur_rate):
+    def calculate_total_debt_in_uah(documents_list, usd_rate, eur_rate):
 
         total_sum = 0
-        for item in aggregation_result:
-            if item["_id"] == "UAH":
-                total_sum += item["currency_sum"]
-            elif item["_id"] == "USD":
-                total_sum += item["currency_sum"] * usd_rate
-            elif item["_id"] == "EUR":
-                total_sum += item["currency_sum"] * eur_rate
+        for item in documents_list:
+            if item["currency"] == "UAH":
+                total_sum += item["money"]
+            elif item["currency"] == "USD":
+                total_sum += item["money"] * usd_rate
+            elif item["currency"] == "EUR":
+                total_sum += item["money"] * eur_rate
         
         return total_sum       
         

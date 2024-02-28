@@ -63,7 +63,7 @@ def test_delete_document_one(mongo_db):
 
 @pytest.mark.nosql_db
 def test_insert_document_many(mongo_db):
-    """Test checks inserting many documents"""
+    """Test checks inserting many documents to a collection"""
 
     mongo_db.insert_document_many(data.collection_name_1, data.debtors_list)
     mongo_db.count_documents(data.collection_name_1, data.count_all_filter)
@@ -75,25 +75,32 @@ def test_insert_document_many(mongo_db):
 
 @pytest.mark.nosql_db
 def test_find_total_debt_in_uah(mongo_db):
-    """Test checks finding total debt in UAH"""
+    """
+    Test checks finding total debt in UAH from MongoDB
+    using aggregation pipeline and compare it with python method result
+    """
 
     mongo_db.aggregate_documents(
         data.collection_name_1, 
         data.total_sum_debts_pipeline
     )
 
-    total_debt = mongo_db.calculate_total_debt_in_uah(
-        mongo_db.aggregation_result,
+    total_debt_py = mongo_db.calculate_total_debt_in_uah(
+        data.debtors_list,
         data.usd_rate,
         data.eur_rate
     )
 
-    assert total_debt == data.expected_debt
+    assert mongo_db.aggregation_result.next()['total_amount'] == total_debt_py
 
 
 @pytest.mark.nosql_db
 def test_forgive_all_debts(mongo_db):
-    """Test checks that all debts are zeroed"""
+    """
+    Test checks that all debts are zeroed 
+    using MonoDB update_many() method for zeroing
+    and aggregation pipeline to check result
+    """
 
     mongo_db.update_document_many(
         data.collection_name_1, 
@@ -106,10 +113,4 @@ def test_forgive_all_debts(mongo_db):
         data.total_sum_debts_pipeline
     )
 
-    total_debt = mongo_db.calculate_total_debt_in_uah(
-        mongo_db.aggregation_result,
-        data.usd_rate,
-        data.eur_rate
-    )
-
-    assert total_debt == 0
+    assert mongo_db.aggregation_result.next()['total_amount'] == 0

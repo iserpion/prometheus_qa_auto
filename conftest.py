@@ -26,6 +26,7 @@ def insert_delete_orders():
     
     db.delete_from_orders()
     db.connection.close()
+    
 
 @pytest.fixture(scope='module')
 def mongo_db():
