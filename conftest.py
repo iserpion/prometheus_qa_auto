@@ -39,7 +39,7 @@ def mongo_db():
     
     db = MongoDatabase(connection_uri)
     db.create_database(data.db_name)
-    db.create_collection(data.collection_name_1)
+    db.create_collection(data.collection_name)
 
     yield db
 

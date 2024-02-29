@@ -4,15 +4,33 @@ class MongoData:
     """Class hold data for MongoDB interaction tests"""
 
     db_name = "debtors_db"
-    collection_name_1 = "debtors"
-    filter_1 = {"ip": "0.1.2.3"}
-    values_1 = {"$set": {"money": 50}}
-    values_2 = {"$set": {"money": 0}}
-    count_all_filter = {}
+    collection_name = "debtors"
+    find_filter_ip = {"ip": "0.1.2.3"}
+    filter_all = {}
+    upd_money_50 = {"$set": {"money": 50}}
+    upd_money_0 = {"$set": {"money": 0}}
     usd_rate = 38
     eur_rate = 41
-    expected_debt = 101050
-    total_sum_debts_pipeline = [
+    top_debtor_city_pipeline = [
+      {
+          "$group": {
+              "_id": "$city", 
+              "total_debtors": {
+                  "$sum": 1
+              }
+          }
+      }, 
+      {
+          "$sort": {
+              "total_debtors": -1
+          }
+      }, 
+      {
+          "$limit": 1
+      }
+    ]
+
+    total_debt_pipeline = [
         {
           "$addFields": {
             "converted_amount": {

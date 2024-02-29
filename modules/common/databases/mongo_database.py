@@ -106,6 +106,7 @@ class MongoDatabase:
     def calculate_total_debt_in_uah(documents_list, usd_rate, eur_rate):
 
         total_sum = 0
+
         for item in documents_list:
             if item["currency"] == "UAH":
                 total_sum += item["money"]
@@ -115,4 +116,18 @@ class MongoDatabase:
                 total_sum += item["money"] * eur_rate
         
         return total_sum       
+    
+    @staticmethod
+    def calculate_top_debtor_city(documents_list):
+    
+        city_debtor_count = {}
+
+        for doc in documents_list:
+            city = doc.get("city")
+            city_debtor_count[city] = city_debtor_count.get(city, 0) + 1
+
+        top_debtor_city = max(city_debtor_count, key=city_debtor_count.get)
         
+        return top_debtor_city
+
+
