@@ -5,7 +5,9 @@ from modules.ui.page_locators.carid_myaccount_page_locators import (
 )
 from selenium.common.exceptions import (
     TimeoutException, 
-    ElementClickInterceptedException
+    ElementClickInterceptedException,
+    StaleElementReferenceException
+
 )
 from modules.common.generators.address_generator import (
     generated_shipping_address,
@@ -124,6 +126,8 @@ class MyAccountPage(BasePage):
 
         # open billing address form
         try:
+            self.element_is_visible(self.locators.B_ADDRESS_ADD_NEW_BTN).click()
+        except StaleElementReferenceException:
             self.element_is_visible(self.locators.B_ADDRESS_ADD_NEW_BTN).click()
         except (TimeoutException, ElementClickInterceptedException):
             print("Add new billing address button is not visible or clickable")
