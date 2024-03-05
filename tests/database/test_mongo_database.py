@@ -27,7 +27,7 @@ def test_insert_document_one(mongo_db):
 
 
 @pytest.mark.nosql_db
-def test_db_name_collection_name_valid(mongo_db):
+def test_check_db_name_and_collection_name(mongo_db):
     """Test checks that created db and collection names are valid"""
     
     mongo_db.list_databases()
