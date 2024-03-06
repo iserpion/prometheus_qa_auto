@@ -36,9 +36,18 @@ class MongoData:
             "converted_amount": {
               "$switch": {
                 "branches": [
-                  { "case": { "$eq": ["$currency", "UAH"] }, "then": "$money" },
-                  { "case": { "$eq": ["$currency", "USD"] }, "then": { "$multiply": ["$money", 38] } },
-                  { "case": { "$eq": ["$currency", "EUR"] }, "then": { "$multiply": ["$money", 41] } }
+                  { 
+                    "case": { "$eq": ["$currency", "UAH"] }, 
+                    "then": "$money" 
+                  },
+                  { 
+                    "case": { "$eq": ["$currency", "USD"] }, 
+                    "then": { "$multiply": ["$money", 38] } 
+                  },
+                  { 
+                    "case": { "$eq": ["$currency", "EUR"] }, 
+                    "then": { "$multiply": ["$money", 41] } 
+                  }
                 ],
                 "default": 0
               }

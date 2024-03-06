@@ -35,7 +35,8 @@ class SpaceXData:
             "history": {
                 "id": "5f6fb312dcfdf403df379720",
                 "title": "First successfull Dragon launch",
-                "details": "SpaceX becomes the first private company to successfully launch, orbit, and recover a spacecraft.",
+                "details": "SpaceX becomes the first private company"\
+                    " to successfully launch, orbit, and recover a spacecraft.",
                 "event_date_unix": 1275677100,
                 "event_date_utc": "2010-06-04T18:45:00Z",
             }
@@ -51,7 +52,10 @@ class SpaceXData:
                 "active": True,
                 "company": "SpaceX",
                 "country": "United States",
-                "description": "Falcon 9 is a two-stage rocket designed and manufactured by SpaceX for the reliable and safe transport of satellites and the Dragon spacecraft into orbit.",
+                "description": "Falcon 9 is a two-stage rocket designed"\
+                    " and manufactured by SpaceX for the reliable and safe"
+                    " transport of satellites and the Dragon spacecraft"\
+                    " into orbit.",
                 "first_flight": "2010-06-04",
                 "cost_per_launch": 50000000,
                 "stages": 2,

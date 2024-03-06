@@ -6,7 +6,9 @@ class PetData:
     INVALID_PET_ID = 'pet_id'
     PET_DELETED_TEXT = 'Pet deleted'
     PET_NOT_FOUND_TEXT = 'Pet not found'
-    ERR_MESSAGE = "Input error: couldn't convert `pet_id` to type `class java.lang.Long`"
+    ERR_MESSAGE = (
+        "Input error: couldn't convert `pet_id` to type `class java.lang.Long`"
+    )
     POST_ERR_MESSAGE = 'There was an error processing your request.'
 
     post_pet_headers = {
